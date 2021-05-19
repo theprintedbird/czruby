@@ -101,7 +101,7 @@ czruby_custom_init(){
 }
 ```
 
-I use GNU readlink (because the Mac version isn't really up to snuff) to make sure that symbolic links are handled properly.
+I use [GNU readlink](http://www.gnu.org/software/coreutils/manual/html_node/readlink-invocation.html) (because the Mac version isn't really up to snuff) to make sure that symbolic links are handled properly. (It can be installed via the coreutils package, [Macports](https://www.macports.org/) and [pkgsrc](https://pkgsrc.joyent.com/install-on-osx/) have it, homebrew surely does too).
 
 ## So that's that
 
