@@ -1,6 +1,6 @@
 # Czruby - easy Ruby version management for Z-Shell
 
-**Czruby** | tʃeɪn(d)ʒˈruːbi |  
+**czruby** | tʃeɪn(d)ʒˈruːbi |  
 **noun**  
 1 **an app or plugin for Z-shell or (less formerly) zsh, that is partly descended from [chruby](https://github.com/postmodern/chruby).**
 
