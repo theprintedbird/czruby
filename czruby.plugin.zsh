@@ -132,7 +132,9 @@ czruby_use(){
 		fi
 		if [[ "${ruby_root:t}" == "$1" ]]; then
 			matches=("$ruby_root" $matches) && break
-		elif [[ "${ruby_eng}" == "$1"  ]]; then
+		elif [[ $ruby_eng == "ruby" && "$1" == $ruby_ver ]]; then
+			matches=("$ruby_root" $matches) && break
+		elif [[ $ruby_eng == "$1"  ]]; then
 			matches=("$ruby_root" $matches)
 		fi
 	done
