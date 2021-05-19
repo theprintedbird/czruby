@@ -52,7 +52,7 @@ export XDG_DATA_HOME="$XDG_CONFIG_HOME"
 export XDG_CACHE_HOME="$HOME/Library/Caches"
 ```
 
-You don't have to do that, it's just an example.
+You don't have to do that, it's just an example, but they do need to be set to *something*.
 
 The `RUBIES_DEFAULT` environment variable tells czruby which Ruby version to use as default. If you don't set it then the default default is `system`, which on a Mac is v2.3.7. (You can also set it temporarily, more on that later).
 
