@@ -11,7 +11,16 @@ ORIGIN
 ------  
 mid 21st century: phonologically Polish portmanteu of ***chruby*** and ***Z-shell***.
 
-## Usage
+- [Usage](#usage)
+- [Dependencies](#dependencies)
+- [Install](#install)
+- [Setup and things you should know](#setup-and-things-you-should-know)
+- [An example](#an-example)
+- [How does it work?](#how-does-it-work-)
+- [What doesn't it do?](#what-doesnt-it-do-)
+- [Licence](#licence)
+
+## <a name="usage">Usage</a>
 
 `czruby 3.0.0` will change to Ruby v3.0.0
 
@@ -33,16 +42,16 @@ Help is available via `czruby -h`.
 
 
 
-## Dependencies
+## <a name="dependencies">Dependencies</a>
 
 - Z-shell
 - Use of [XDG](https://specifications.freedesktop.org/basedir-spec/latest/ar01s02.html) environment variables
 
-## Install
+## <a name="install">Install</a>
 
 It only needs to be `source`d, so put it wherever is convenient for doing so (probably loaded by zshrc).
 
-## Setup and things you should know
+## <a name="setup-and-things-you-should-know">Setup and things you should know</a>
 
 First, set the `XDG_CONFIG_HOME`, `XDG_CACHE_HOME` and `XDG_DATA_HOME` environment variables. I have mine set in `~/.zshenv` as follows:
 
@@ -81,7 +90,7 @@ rubies=("$HOME/.rubies/2.7.0" $rubies)
 
 So, you can add rubies installed from anywhere. Since you'll probably want to do this on shell init there is help in the form of the `czruby_custom_init`. Czruby will call it (if defined) during its init phase of your shell (or whenever else you source the czruby file).
 
-### An example
+### <a name="an-example">An example</a>
 
 Let's imagine you've got all your rubies installed in `~/.rubies`:
 
@@ -150,7 +159,7 @@ czruby_custom_init(){
 
 I use [GNU readlink](http://www.gnu.org/software/coreutils/manual/html_node/readlink-invocation.html) (because the Mac version isn't really up to snuff) to make sure that symbolic links are handled properly. (It can be installed via the coreutils package, [Macports](https://www.macports.org/) and [pkgsrc](https://pkgsrc.joyent.com/install-on-osx/) have it, homebrew surely does too).
 
-## How does it work?
+## <a name="how-does-it-work-">How does it work?</a>
 
 Good question!
 
@@ -191,11 +200,11 @@ and these helpful zsh arrays (which you probably won't use but it's good to know
 - `$gem_path`
 - `$rubies`
 
-## What doesn't it do?
+## <a name="what-doesnt-it-do-">What doesn't it do?</a>
 
 It doesn't automatically change to a ruby when entering a directory with a .ruby-version file or anything like that. I'm not really interested in that - use Vagrant or Docker or something like that, the version file is a solution for a problem that (should) no longer persist.
 
-## Why not chruby?
+## <a name="why-not-chruby-">Why not chruby?</a>
 
 I like chruby the best of all the version managers but it's taking an *age* to get a new release and I get the dreaded [Ignoring gem… because its extensions are not built](https://stackoverflow.com/questions/38797458/ignoring-gem-because-its-extensions-are-not-built) error and nothing fixes it other than not using chruby.
 
@@ -205,6 +214,6 @@ Also, I wanted to have it fit my set up better, and it does.
 
 If you find this useful or think it can be improved, do let me know, I'm open to suggestions. This does, however, work well for me and my setup.
 
-## Licence
+## <a name="licence">Licence</a>
 
 See Licence.txt
