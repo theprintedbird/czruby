@@ -14,7 +14,7 @@ mid 21st century: phonologically Polish portmanteu of ***chruby*** and ***Z-shel
 ## Dependencies
 
 - Z-shell
-- Use of XDG environment variables
+- Use of [XDG](https://specifications.freedesktop.org/basedir-spec/latest/ar01s02.html) environment variables
 
 ## Install
 
