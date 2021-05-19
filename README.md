@@ -50,7 +50,6 @@ First, set the `XDG_CONFIG_HOME`, `XDG_CACHE_HOME` and `XDG_DATA_HOME` environme
 export XDG_CONFIG_HOME="${HOME}/Library/Application Support"
 export XDG_DATA_HOME="$XDG_CONFIG_HOME"
 export XDG_CACHE_HOME="$HOME/Library/Caches"
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 ```
 
 You don't have to do that, it's just an example.
