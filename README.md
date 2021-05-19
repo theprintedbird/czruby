@@ -82,11 +82,10 @@ $ czruby
 current default system
 ```
 
-<!-- 
 or in colour:
 
-![<#alt_text#>](<#url#>)
- -->
+![Screenshot of chruby detailing the current status and availability of rubies](https://user-images.githubusercontent.com/326444/118755033-ac75d100-b857-11eb-80e2-b4073806cdae.png)
+
 
 I actually keep my rubies in `~/Library/Frameworks/Ruby.framework` because Apple have a [useful specification](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPFrameworks/Concepts/FrameworkAnatomy.html) that is organised a lot like [GNU Stow](https://www.gnu.org/software/stow/manual/stow.html) (another useful app). This means my `~/.zshenv` has this:
 
