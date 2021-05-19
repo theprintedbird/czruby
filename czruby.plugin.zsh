@@ -1,17 +1,7 @@
 ## Change Ruby
 
-# I put the following in ~/.zshenv
-
-# export RUBIES_DEFAULT="2.7.0"
-# 
-# czruby_custom_init(){
-# 	for name in $HOME/Library/Frameworks/Ruby.framework/Versions/*; do
-# 		canon=$(greadlink -f "$name")
-# 		if [[ ${canon:t} != "Current" ]]; then
-# 			rubies=("$canon" $rubies)
-# 		fi
-# 	done
-# }
+# Note: `rehash` isn't needed because any change to
+# $path will trigger an automatic rehash.
 
 export -TU RUBIES rubies
 
