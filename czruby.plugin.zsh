@@ -79,10 +79,7 @@ czruby_set_default(){
 	# if so, change to new choice
 	# At worst, either the user has to do this themselves
 	# or set it back.
-	if [[ "$RUBY_ENGINE-$RUBY_VERSION" == "$choice" ]] ||
-			[[ "$RUBY_VERSION" == "$choice" && "$RUBY_ENGINE" == "ruby" ]]; then
-		czruby "$choice"
-	fi
+	czruby "$choice"
 }
 
 
