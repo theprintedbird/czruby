@@ -4,6 +4,8 @@
 # $path will trigger an automatic rehash.
 
 export -TU RUBIES rubies
+export -TU GEM_PATH gem_path
+czruby_datadir="$XDG_DATA_HOME/czruby"
 
 
 gem_calc_home(){
@@ -12,13 +14,6 @@ gem_calc_home(){
 	print -n "$gh"
 }
 
-export -TU GEM_PATH gem_path
-
-
-export RUBY_CONFIG="$HOME/Library/ApplicationSupport/Ruby"
-export RUBY_STD_EXES=(bundle bundler erb gem irb racc racc2y rake rdoc ri ruby y2racc)
-
-czruby_datadir="$XDG_DATA_HOME/czruby"
 
 czruby_setup(){
 	mkdir -p "$czruby_datadir"
@@ -53,6 +48,7 @@ export RUBY_ROOT="$ruby_root"
 export RUBY_VERSION="$ruby_ver"
 export GEM_HOME=\$(gem_calc_home)
 gem_path=(\$GEM_HOME "$ruby_root/lib/$ruby_eng/gems/$ruby_ver" \$gem_path)
+path=("\$RUBY_ROOT/bin" \$path)
 local bin
 for place in \${(Oa)gem_path}; do
   bin="\$place/bin"
@@ -104,24 +100,6 @@ czruby_reset(){
 	gem_path=()
 	unset excludes
 	source "$czruby_datadir/$ver"
-	czruby_aliases "$ruby_root"
-}
-
-
-czruby_aliases () {
-	local oldifs="$IFS"
-	local ruby_root="$1"
-	for exe in $RUBY_STD_EXES; do
-		IFS=$': '
-		splits=($(whence -w ruby))
-		if [[ $? == 0 && $splits[2] == "alias" ]]; then
-			unalias "$exe" 2>/dev/null
-		fi
-		if [[ -f "$ruby_root/bin/$exe" ]]; then
-			alias "$exe"="'$ruby_root/bin/$exe'"
-		fi
-	done
-	IFS="$oldifs"
 }
 
 
