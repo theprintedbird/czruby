@@ -107,3 +107,7 @@ I use GNU readlink (because the Mac version isn't really up to snuff) to make su
 ## So that's that
 
 If you find this useful or think it can be improved, do let me know, I'm open to suggestions. This does, however, work well for me and my setup.
+
+## Licence
+
+See Licence.txt
