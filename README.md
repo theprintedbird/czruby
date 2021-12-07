@@ -22,9 +22,11 @@ mid 21st century: phonologically Polish portmanteu of ***chruby*** and ***Z-shel
 
 ## <a name="usage">Usage</a>
 
-`czruby 3.0.0` will change to Ruby v3.0.0
+Running the following commands would bring the following outcomes:
 
-`czruby truffleruby` will change (on my system) to TruffleRuby v21.1.0 because I only have one version of TruffleRuby. If I had more it would show an error.
+`czruby 3.0.0` would change the current ruby to Ruby v3.0.0
+
+`czruby truffleruby` would change (on my system) to TruffleRuby v21.1.0 because I only have one version of TruffleRuby. If I had more it would show an error.
 
 `czruby truffleruby-21.1.0` would then be the correct command to use (I could use that anyway)
 
