@@ -1,13 +1,23 @@
 ## Change Ruby
 
+## This Zsh script is designed to manage different Ruby environments. It allows the user to switch
+## between various Ruby versions and sets up environment variables for Ruby and Gem paths.
+
 # Note: `rehash` isn't needed because any change to
 # $path will trigger an automatic rehash.
 
+# Sets up an array to store the paths of the different Ruby versions.
 export -TU RUBIES rubies
+
+# Sets up an array to store the paths for the Gems associated with different Ruby versions.
 export -TU GEM_PATH gem_path
+
+# Defines the directory to store configuration files for different Ruby versions.
 czruby_datadir="$XDG_DATA_HOME/czruby"
 
 
+# Calculates and sets up a cache directory for Gems based on the Ruby version and engine being used.
+# It ensures the directory exists and returns the path to be used by other functions.
 gem_calc_home(){
 	local gh="$XDG_CACHE_HOME/Ruby/$RUBY_ENGINE/$RUBY_VERSION"
 	mkdir -p "$gh"
@@ -15,6 +25,8 @@ gem_calc_home(){
 }
 
 
+# Sets up the environment for managing Ruby versions. It creates necessary directories,
+# includes user customizations, and ensures that 'system' Ruby is available in the list.
 czruby_setup(){
 	mkdir -p "$czruby_datadir"
 	if whence -w czruby_custom_init 2>&1 > /dev/null; then
@@ -41,6 +53,7 @@ czruby_setup(){
 			ruby_ver="$key"
 		fi
 
+		# Writes environment setup for the specific Ruby version.
 		if [[ ! -e "$czruby_datadir/$key" ]]; then
 cat << EOF > "$czruby_datadir/$key"
 export RUBY_ENGINE="$ruby_eng"
@@ -63,6 +76,7 @@ EOF
 }
 
 
+# Sets the default Ruby environment to use when no specific version is specified.
 czruby_set_default(){
 	local choice="${1:-system}"
 	[[ -z $choice ]] && return 1
@@ -82,7 +96,8 @@ czruby_set_default(){
 	czruby "$choice"
 }
 
-
+# Resets the Ruby environment to either the default or a specified version.
+# It adjusts the PATH and GEM_PATH variables to match the specified environment.
 czruby_reset(){
 	local ver=${1:-default}
 	local ruby_root=${2:-$RUBY_ROOT}
@@ -99,7 +114,8 @@ czruby_reset(){
 	source "$czruby_datadir/$ver"
 }
 
-
+# A utility function that sources the configuration file for the specified Ruby environment.
+# It verifies the file's readability and sources it or calls the setup if the file is not found.
 czruby_source(){
 	# source the file
 	if [[ -r "$1" ]]; then
@@ -116,7 +132,8 @@ czruby_source(){
 	fi
 }
 
-
+# Determines which Ruby environment to use based on a partial or full match.
+# It reports if there are too many matches or if the specified Ruby is unknown.
 czruby_use(){
 	local dir ruby ruby_root ruby_ver ruby_eng
 	local matches=()
@@ -152,7 +169,8 @@ czruby_use(){
 	unset dir ruby splits ruby_root ruby_ver ruby_eng oldifs matches
 }
 
-
+# The main function for the script which parses command-line arguments
+# and dispatches control to the appropriate function or displays information.
 czruby () {
 	case "$1" in
 		-h|--help)
@@ -211,8 +229,11 @@ czruby () {
 	esac
 }
 
+# Ensures a default Ruby is set if none has been previously defined.
 if [[ -z "$RUBIES_DEFAULT" ]]; then
 	export RUBIES_DEFAULT="system"
 fi
+
+# Perform initial setup and set the Ruby environment to the default or specified Ruby.
 czruby_setup
 czruby "$RUBIES_DEFAULT"
