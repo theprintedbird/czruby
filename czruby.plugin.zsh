@@ -6,6 +6,8 @@
 # Note: `rehash` isn't needed because any change to
 # $path will trigger an automatic rehash.
 
+# TODO dependency check for greadlink and XDGs are set
+
 # Sets up an array to store the paths of the different Ruby versions.
 export -TU RUBIES rubies
 
@@ -39,6 +41,7 @@ czruby_setup(){
 	local ruby_root ruby_ver ruby_eng key
 	for ruby_root in $rubies; do
 		key="${ruby_root:t}"
+		# TODO consider case statement here, for performance
 		if [[ $key == system ]]; then
 			ruby_root="/usr"
 			ruby_eng="ruby"
@@ -102,6 +105,7 @@ czruby_reset(){
 	local ver=${1:-default}
 	local ruby_root=${2:-$RUBY_ROOT}
 	local excludes=()
+	# TODO consider replacing loop
 	for place in $gem_path; do
     bin="$place/bin"
 	  excludes=("$bin" $excludes)
@@ -149,12 +153,14 @@ czruby_use(){
 		fi
 		if [[ "${ruby_root:t}" == "$1" ]]; then
 			matches=("$ruby_root" $matches) && break
+		# TODO consider case statement here, for performance
 		elif [[ $ruby_eng == "ruby" && "$1" == $ruby_ver ]]; then
 			matches=("$ruby_root" $matches) && break
 		elif [[ $ruby_eng == "$1"  ]]; then
 			matches=("$ruby_root" $matches)
 		fi
 	done
+	# TODO consider case statement here, for performance
 	if [[ $#matches == 0 ]]; then
 		printf "czruby: unknown Ruby: %s\n" $1 >&2
 		return 1
