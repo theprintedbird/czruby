@@ -88,9 +88,9 @@ czruby_set_default(){
 		czruby
 		return 1
 	fi
-	local old_default=$RUBIES_DEFAULT
+	local old_default="$RUBIES_DEFAULT"
 	RUBIES_DEFAULT="$choice"
-	[[ -h $czruby_datadir/default ]] && rm $czruby_datadir/default
+	[[ -h "$czruby_datadir/default" ]] && rm "$czruby_datadir/default"
 	ln -s "$czruby_datadir/${RUBIES_DEFAULT}" "$czruby_datadir/default"
 	# Check if current ruby was the default
 	# if so, change to new choice
@@ -103,10 +103,10 @@ czruby_set_default(){
 # It adjusts the PATH and GEM_PATH variables to match the specified environment.
 czruby_reset(){
 	local ver=${1:-default}
-	local ruby_root=${2:-$RUBY_ROOT}
+	local ruby_root="${2:-$RUBY_ROOT}"
 	local excludes=()
 	# TODO consider replacing loop
-	for place in $gem_path; do
+	for place in "$gem_path"; do
     bin="$place/bin"
 	  excludes=("$bin" $excludes)
 	done
@@ -142,7 +142,7 @@ czruby_use(){
 	local dir ruby ruby_root ruby_ver ruby_eng
 	local matches=()
 	for ruby_root in $rubies; do
-		if [[ ${ruby_root:t} =~ "-" ]]; then
+		if [[ "${ruby_root:t}" =~ "-" ]]; then
 			ruby_eng=${${ruby_root:t}:-ruby}
 			splits=(${(s[-])ruby_eng});
 			ruby_eng=$splits[1]
@@ -191,22 +191,22 @@ czruby () {
 			local stopper="%{$reset_color%}"
 			local default=system
 			if [[ -r "$czruby_datadir/default" ]]; then
-				default="$(greadlink -f $czruby_datadir/default)"
-				default=${default:t}
+				default="$(greadlink -f \"$czruby_datadir/default\")"
+				default="${default:t}"
 			fi
 			typeset -A lines
 			print -Pn -f '%6s| %-11s| %-10s| %4s\n' -- " " engine version root
 			print -Pn -f '=%.0s' -- {1..40}
 			print -n '\n'
 			for ruby_root in $rubies; do
-				if [[ $ruby_root == "system" ]]; then
+				if [[ "$ruby_root" == "system" ]]; then
 					ruby_eng="ruby"
 					ruby_ver="2.3.7"
 					ruby_root="/usr"
 					key="system"
 				else
 					key="${ruby_root:t}"
-					if [[ ${ruby_root:t} =~ "-" ]]; then
+					if [[ "${ruby_root:t}" =~ "-" ]]; then
 						ruby_eng=${${ruby_root:t}:-ruby}
 						splits=(${(s[-])ruby_eng});
 						ruby_eng=$splits[1]
@@ -216,11 +216,11 @@ czruby () {
 						ruby_ver="${ruby_root:t}"
 					fi
 				fi
-				[[ $RUBY_ROOT == $ruby_root ]] && rmarker="$FG[002]*$stopper " && marked="true" || rmarker="  "
+				[[ "$RUBY_ROOT" == "$ruby_root" ]] && rmarker="$FG[002]*$stopper " && marked="true" || rmarker="  "
 				[[ $default == $key ]] && dmarker="$FG[199]*$stopper " || dmarker="  "
 				[[ $key == "system" ]] && smarker="$FG[247]*$stopper " || smarker="  "
 
-				print -Pn -f '%2b%2b%2b %-12s %-11s %s%s\n' -- $rmarker $dmarker $smarker ${ruby_eng} $ruby_ver ${ruby_root} $stopper
+				print -Pn -f '%2b%2b%2b %-12s %-11s %s%s\n' -- $rmarker $dmarker $smarker ${ruby_eng} $ruby_ver "${ruby_root}" $stopper
 				unset rmarker dmarker smarker
 			done
 			print -Pn -f '\n%b %b %b' "$FG[002]current$stopper" "$FG[199]default$stopper" "$FG[247]system$stopper\n"
