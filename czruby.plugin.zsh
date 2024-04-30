@@ -57,7 +57,6 @@ czruby_setup(){
 		fi
 
 		# Writes environment setup for the specific Ruby version.
-		if [[ ! -e "$czruby_datadir/$key" ]]; then
 cat << EOF > "$czruby_datadir/$key"
 export RUBY_ENGINE="$ruby_eng"
 export RUBY_ROOT="$ruby_root"
@@ -72,7 +71,6 @@ for place in \${(Oa)gem_path}; do
 done
 unset bin
 EOF
-		fi
 	done
 	unset ruby_root ruby_ver ruby_eng key
 	czruby_set_default "$RUBIES_DEFAULT"
