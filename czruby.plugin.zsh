@@ -45,7 +45,7 @@ czruby_setup(){
 		if [[ $key == system ]]; then
 			ruby_root="/usr"
 			ruby_eng="ruby"
-			ruby_ver="2.3.7" # TODO remove hardcoding
+			ruby_ver=$(/usr/bin/ruby -e "print RUBY_VERSION")
 		elif [[ $key =~ "-" ]]; then
 			ruby_eng=${key:-ruby}
 			splits=(${(s[-])ruby_eng});
@@ -199,7 +199,7 @@ czruby () {
 			for ruby_root in $rubies; do
 				if [[ "$ruby_root" == "system" ]]; then
 					ruby_eng="ruby"
-					ruby_ver="2.3.7"
+					ruby_ver="2.6.10"
 					ruby_root="/usr"
 					key="system"
 				else
