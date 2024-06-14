@@ -187,8 +187,10 @@ czruby () {
 #				;;
 		"") # show available rubies
 			local marked ruby_root ruby_ver ruby_eng key
+			# rmarker is the marker for the selected ruby
+			# dmarker is the marker for the default ruby
+			# smarker is the marker for the system ruby
 			local rmarker dmarker smarker
-			local stopper="%{$reset_color%}"
 			local default=system
 			if [[ -r "$czruby_datadir/default" ]]; then
 				default="$(greadlink -f \"$czruby_datadir/default\")"
@@ -216,14 +218,14 @@ czruby () {
 						ruby_ver="${ruby_root:t}"
 					fi
 				fi
-				[[ "$RUBY_ROOT" == "$ruby_root" ]] && rmarker="$FG[002]*$stopper " && marked="true" || rmarker="  "
-				[[ $default == $key ]] && dmarker="$FG[199]*$stopper " || dmarker="  "
-				[[ $key == "system" ]] && smarker="$FG[247]*$stopper " || smarker="  "
+				[[ "$RUBY_ROOT" == "$ruby_root" ]] && rmarker="$FG[002]*%{$reset_color%} " && marked="true" || rmarker="  "
+				[[ "$default" == "$key" ]] && dmarker="$FG[199]*%{$reset_color%} " || dmarker="  "
+				[[ "$key" == "system" ]] && smarker="$FG[247]*%{$reset_color%} " || smarker="  "
 
-				print -Pn -f '%2b%2b%2b %-12s %-11s %s%s\n' -- $rmarker $dmarker $smarker ${ruby_eng} $ruby_ver "${ruby_root}" $stopper
+				print -Pn -f '%2b%2b%2b %-12s %-11s %s%s\n' -- $rmarker $dmarker $smarker ${ruby_eng} $ruby_ver "${ruby_root}" "%{$reset_color%}"
 				unset rmarker dmarker smarker
 			done
-			print -Pn -f '\n%b %b %b' "$FG[002]current$stopper" "$FG[199]default$stopper" "$FG[247]system$stopper\n"
+			print -Pn -f '\n%b %b %b' "$FG[002]current%{$reset_color%}" "$FG[199]default%{$reset_color%}" "$FG[247]system%{$reset_color%}\n"
 			unset marked rmarker ruby_root ruby_eng ruby_ver
 			;;
 		--set-default)	shift;
