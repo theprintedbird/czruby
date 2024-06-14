@@ -193,8 +193,7 @@ czruby () {
 			local rmarker dmarker smarker
 			local default=system
 			if [[ -r "$czruby_datadir/default" ]]; then
-				default="$(greadlink -f \"$czruby_datadir/default\")"
-				default="${default:t}"
+				default="${$(greadlink -f "$czruby_datadir/default"):t}"
 			fi
 			typeset -A lines
 			print -Pn -f '%6s| %-11s| %-10s| %4s\n' -- " " engine version root
