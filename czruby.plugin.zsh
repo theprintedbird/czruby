@@ -27,8 +27,10 @@ gem_calc_home(){
 }
 
 
-# Sets up the environment for managing Ruby versions. It creates necessary directories,
-# includes user customizations, and ensures that 'system' Ruby is available in the list.
+# Sets up the environment for managing Ruby versions.
+# It creates necessary directories,
+# includes user customizations, 
+# and ensures that 'system' Ruby is available in the list.
 czruby_setup(){
 	mkdir -p "$czruby_datadir"
 	if whence -w czruby_custom_init 2>&1 > /dev/null; then
@@ -66,7 +68,7 @@ gem_path=(\$GEM_HOME "$ruby_root/lib/$ruby_eng/gems/$ruby_ver" \$gem_path)
 path=("\$RUBY_ROOT/bin" \$path)
 local bin
 for place in \${(Oa)gem_path}; do
-  bin="\$place/bin"
+	bin="\$place/bin"
 	path=("\$bin" \$path)
 done
 unset bin
@@ -105,8 +107,8 @@ czruby_reset(){
 	local excludes=()
 	# TODO consider replacing loop
 	for place in "$gem_path"; do
-    bin="$place/bin"
-	  excludes=("$bin" $excludes)
+		bin="$place/bin"
+		excludes=("$bin" $excludes)
 	done
 	if [[ $#gem_path > 0 ]]; then
 		path=(${path:|excludes})
@@ -154,7 +156,7 @@ czruby_use(){
 		# TODO consider case statement here, for performance
 		elif [[ $ruby_eng == "ruby" && "$1" == $ruby_ver ]]; then
 			matches=("$ruby_root" $matches) && break
-		elif [[ $ruby_eng == "$1"  ]]; then
+		elif [[ $ruby_eng == "$1" ]]; then
 			matches=("$ruby_root" $matches)
 		fi
 	done
@@ -169,7 +171,7 @@ czruby_use(){
 		done
 		return 1
 	fi
-  czruby_reset "${matches[1]:t}" "$ruby_root"
+	czruby_reset "${matches[1]:t}" "$ruby_root"
 	unset dir ruby splits ruby_root ruby_ver ruby_eng oldifs matches
 }
 
@@ -180,9 +182,9 @@ czruby () {
 		-h|--help)
 			printf "usage: czruby [RUBY|VERSION|system | --set-default RUBY] [RUBYOPT...]\n"
 			;;
-# 		-V|--version)
-# 			echo "czruby: $CZRUBY_VERSION"
-# 			;;
+#			-V|--version)
+#				echo "czruby: $CZRUBY_VERSION"
+#				;;
 		"") # show available rubies
 			local marked ruby_root ruby_ver ruby_eng key
 			local rmarker dmarker smarker
