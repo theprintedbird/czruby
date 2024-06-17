@@ -1,0 +1,37 @@
+# Determines which Ruby environment to use based on a partial or full match.
+# It reports if there are too many matches or if the specified Ruby is unknown.
+local dir ruby ruby_root ruby_ver ruby_eng
+local matches=()
+for ruby_root in $rubies; do
+	if [[ "${ruby_root:t}" =~ "-" ]]; then
+		ruby_eng=${${ruby_root:t}:-ruby}
+		splits=(${(s[-])ruby_eng});
+		ruby_eng=$splits[1]
+		ruby_ver=$splits[2]
+	else
+		ruby_eng="ruby"
+		ruby_ver="${ruby_root:t}"
+	fi
+	if [[ "${ruby_root:t}" == "$1" ]]; then
+		matches=("$ruby_root" $matches) && break
+	# TODO consider case statement here, for performance
+	elif [[ $ruby_eng == "ruby" && "$1" == $ruby_ver ]]; then
+		matches=("$ruby_root" $matches) && break
+	elif [[ $ruby_eng == "$1" ]]; then
+		matches=("$ruby_root" $matches)
+	fi
+done
+# TODO consider case statement here, for performance
+if [[ $#matches == 0 ]]; then
+	printf "czruby: unknown Ruby: %s\n" $1 >&2
+	return 1
+elif [[ $#matches -ge 2 ]]; then
+	printf "Too many matches, be more specific\n"
+	for match in $matches; do
+		printf '%s %s\n' "${match:t}" "${match}";
+	done
+	return 1
+fi
+czruby_reset "${matches[1]:t}" "$ruby_root"
+unset dir ruby splits ruby_root ruby_ver ruby_eng oldifs matches
+:

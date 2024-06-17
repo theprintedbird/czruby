@@ -1,0 +1,17 @@
+# Resets the Ruby environment to either the default or a specified version.
+# It adjusts the PATH and GEM_PATH variables to match the specified environment.
+local ver=${1:-default}
+local ruby_root="${2:-$RUBY_ROOT}"
+local excludes=()
+# TODO consider replacing loop
+for place in "$gem_path"; do
+	bin="$place/bin"
+	excludes=("$bin" $excludes)
+done
+if [[ $#gem_path > 0 ]]; then
+	path=(${path:|excludes})
+fi
+gem_path=()
+unset excludes
+source "$czruby_datadir/$ver"
+:

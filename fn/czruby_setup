@@ -1,0 +1,49 @@
+# Sets up the environment for managing Ruby versions.
+# It creates necessary directories,
+# includes user customizations, 
+# and ensures that 'system' Ruby is available in the list.
+mkdir -p "$czruby_datadir"
+if whence -w czruby_custom_init 2>&1 > /dev/null; then
+	czruby_custom_init
+fi
+# If system is not found in the rubies then add it
+if ! (( $rubies[(Ie)system] )); then
+	rubies=(system $rubies)
+fi
+local ruby_root ruby_ver ruby_eng key
+for ruby_root in $rubies; do
+	key="${ruby_root:t}"
+	# TODO consider case statement here, for performance
+	if [[ $key == system ]]; then
+		ruby_root="/usr"
+		ruby_eng="ruby"
+		ruby_ver=$(/usr/bin/ruby -e "print RUBY_VERSION")
+	elif [[ $key =~ "-" ]]; then
+		ruby_eng=${key:-ruby}
+		splits=(${(s[-])ruby_eng});
+		ruby_eng=$splits[1]
+		ruby_ver=$splits[2]
+	else
+		ruby_eng="ruby"
+		ruby_ver="$key"
+	fi
+
+	# Writes environment setup for the specific Ruby version.
+cat << EOF > "$czruby_datadir/$key"
+export RUBY_ENGINE="$ruby_eng"
+export RUBY_ROOT="$ruby_root"
+export RUBY_VERSION="$ruby_ver"
+export GEM_HOME=\$(czruby_gem_calc_home)
+gem_path=(\$GEM_HOME "$ruby_root/lib/$ruby_eng/gems/$ruby_ver" \$gem_path)
+path=("\$RUBY_ROOT/bin" \$path)
+local bin
+for place in \${(Oa)gem_path}; do
+	bin="\$place/bin"
+	path=("\$bin" \$path)
+done
+unset bin
+EOF
+done
+unset ruby_root ruby_ver ruby_eng key
+czruby_set_default "$RUBIES_DEFAULT"
+:
