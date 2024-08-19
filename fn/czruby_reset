@@ -3,14 +3,18 @@
 local ver=${1:-default}
 local ruby_root="${2:-$RUBY_ROOT}"
 local excludes=()
+
 # TODO consider replacing loop
 for place in "$gem_path"; do
-	bin="$place/bin"
-	excludes=("$bin" $excludes)
+  local bin="$place/bin"
+  excludes=("$bin" "${excludes[@]}")  # Append to the array correctly
 done
+
 if [[ $#gem_path > 0 ]]; then
+	# remove any excluded paths
 	path=(${path:|excludes})
 fi
+
 gem_path=()
 unset excludes
 source "$czruby_datadir/$ver"

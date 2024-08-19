@@ -36,12 +36,10 @@ export RUBY_VERSION="$ruby_ver"
 export GEM_HOME=\$(czruby_gem_calc_home)
 gem_path=(\$GEM_HOME "$ruby_root/lib/$ruby_eng/gems/$ruby_ver" \$gem_path)
 path=("\$RUBY_ROOT/bin" \$path)
-local bin
 for place in \${(Oa)gem_path}; do
-	bin="\$place/bin"
+	local bin="\$place/bin"
 	path=("\$bin" \$path)
 done
-unset bin
 EOF
 done
 unset ruby_root ruby_ver ruby_eng key
