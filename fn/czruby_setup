@@ -48,4 +48,4 @@ EOF
 done
 unset ruby_root ruby_ver ruby_eng key
 czruby_set_default "$RUBIES_DEFAULT"
-:
+
