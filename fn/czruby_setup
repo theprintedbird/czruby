@@ -13,20 +13,23 @@ fi
 local ruby_root ruby_ver ruby_eng key
 for ruby_root in $rubies; do
 	key="${ruby_root:t}"
-	# TODO consider case statement here, for performance
-	if [[ $key == system ]]; then
-		ruby_root="/usr"
-		ruby_eng="ruby"
-		ruby_ver=$(/usr/bin/ruby -e "print RUBY_VERSION")
-	elif [[ $key =~ "-" ]]; then
-		ruby_eng=${key:-ruby}
-		splits=(${(s[-])ruby_eng});
-		ruby_eng=$splits[1]
-		ruby_ver=$splits[2]
-	else
-		ruby_eng="ruby"
-		ruby_ver="$key"
-	fi
+
+	# TODO consider what to do when key matches but ruby_root has changed
+	if [[ ! -f "$czruby_datadir/$key" ]]; then
+		# TODO consider case statement here, for performance
+		if [[ $key == system ]]; then
+			ruby_root="/usr"
+			ruby_eng="ruby"
+			ruby_ver=$(/usr/bin/ruby -e "print RUBY_VERSION")
+		elif [[ $key =~ "-" ]]; then
+			ruby_eng=${key:-ruby}
+			splits=(${(s[-])ruby_eng});
+			ruby_eng=$splits[1]
+			ruby_ver=$splits[2]
+		else
+			ruby_eng="ruby"
+			ruby_ver="$key"
+		fi
 
 	# Writes environment setup for the specific Ruby version.
 cat << EOF > "$czruby_datadir/$key"
@@ -41,6 +44,7 @@ for place in \${(Oa)gem_path}; do
 	path=("\$bin" \$path)
 done
 EOF
+	fi
 done
 unset ruby_root ruby_ver ruby_eng key
 czruby_set_default "$RUBIES_DEFAULT"
