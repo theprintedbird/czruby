@@ -17,5 +17,5 @@ fi
 
 gem_path=()
 unset excludes
-source "$czruby_datadir/$ver"
+czruby_source "$czruby_datadir/$ver"
 :
