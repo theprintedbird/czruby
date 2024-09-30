@@ -31,12 +31,14 @@ for ruby_root in $rubies; do
 			ruby_ver="$key"
 		fi
 
+		local gem_home="$XDG_CACHE_HOME/Ruby/$ruby_eng/$ruby_ver"
+		mkdir -p "$gem_home"
 	# Writes environment setup for the specific Ruby version.
 cat << EOF > "$czruby_datadir/$key"
 export RUBY_ENGINE="$ruby_eng"
 export RUBY_ROOT="$ruby_root"
 export RUBY_VERSION="$ruby_ver"
-export GEM_HOME=\$(czruby_gem_calc_home)
+export GEM_HOME="$gem_home"
 gem_path=(\$GEM_HOME "$ruby_root/lib/$ruby_eng/gems/$ruby_ver" \$gem_path)
 path=("\$RUBY_ROOT/bin" \$path)
 for place in \${(Oa)gem_path}; do

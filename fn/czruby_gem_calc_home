@@ -1,6 +1,0 @@
-# Calculates and sets up a cache directory for Gems based on the Ruby version and engine being used.
-# It ensures the directory exists and returns the path to be used by other functions.
-local gh="$XDG_CACHE_HOME/Ruby/$RUBY_ENGINE/$RUBY_VERSION"
-mkdir -p "$gh"
-print -n "$gh"
-:
