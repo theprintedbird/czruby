@@ -1,19 +1,23 @@
 # Sets the default Ruby environment to use when no specific version is specified.
-local choice="${1:-system}"
-[[ -z $choice ]] && return 1
-if [[ ! $rubies(Ie)$choice ]]; then
-	printf "That ruby is not available"
-	czruby
-	return 1
-fi
-local old_default="$RUBIES_DEFAULT"
-RUBIES_DEFAULT="$choice"
-[[ -h "$czruby_datadir/default" ]] && rm "$czruby_datadir/default"
-ln -s "$czruby_datadir/${RUBIES_DEFAULT}" "$czruby_datadir/default"
-# Check if current ruby was the default
-# if so, change to new choice
-# At worst, either the user has to do this themselves
-# or set it back.
-czruby "$choice"
-:
+{
+	local choice="${1:-system}"
+	[[ -z $choice ]] && return 1
+	if [[ -z ${(M)rubies:#*$choice} ]]; then
+		print "That ruby is not available\n\n"
+		czruby
+		return 1
+	fi
+
+	if [[ -f "$czruby_datadir/${choice}" ]]; then
+		RUBIES_DEFAULT="$choice"
+		[[ -h "$czruby_datadir/default" ]] && rm "$czruby_datadir/default"
+		ln -s "$czruby_datadir/${RUBIES_DEFAULT}" "$czruby_datadir/default"
+	else
+		printf "That ruby has not been set up, please run czruby_setup\n\n"
+		return 1
+	fi
+
+	czruby_reset "$choice"
+}
+
 

@@ -10,26 +10,27 @@ fi
 if ! (( $rubies[(Ie)system] )); then
 	rubies=(system $rubies)
 fi
-local ruby_root ruby_ver ruby_eng key
-for ruby_root in $rubies; do
-	key="${ruby_root:t}"
+{
+	local ruby_root ruby_ver ruby_eng key
+	for ruby_root in $rubies; do
+		key="${ruby_root:t}"
 
-	# TODO consider what to do when key matches but ruby_root has changed
-	if [[ ! -f "$czruby_datadir/$key" ]]; then
-		# TODO consider case statement here, for performance
-		if [[ $key == system ]]; then
-			ruby_root="/usr"
-			ruby_eng="ruby"
-			ruby_ver=$(/usr/bin/ruby -e "print RUBY_VERSION")
-		elif [[ $key =~ "-" ]]; then
-			ruby_eng=${key:-ruby}
-			splits=(${(s[-])ruby_eng});
-			ruby_eng=$splits[1]
-			ruby_ver=$splits[2]
-		else
-			ruby_eng="ruby"
-			ruby_ver="$key"
-		fi
+		# TODO consider what to do when key matches but ruby_root has changed
+		if [[ ! -f "$czruby_datadir/$key" ]]; then
+			# TODO consider case statement here, for performance
+			if [[ $key == system ]]; then
+				ruby_root="/usr"
+				ruby_eng="ruby"
+				ruby_ver=$(/usr/bin/ruby -e "print RUBY_VERSION")
+			elif [[ $key =~ "-" ]]; then
+				ruby_eng=${key:-ruby}
+				splits=(${(s[-])ruby_eng});
+				ruby_eng=$splits[1]
+				ruby_ver=$splits[2]
+			else
+				ruby_eng="ruby"
+				ruby_ver="$key"
+			fi
 
 		local gem_home="$XDG_CACHE_HOME/Ruby/$ruby_eng/$ruby_ver"
 		mkdir -p "$gem_home"
@@ -46,8 +47,9 @@ for place in \${(Oa)gem_path}; do
 	path=("\$bin" \$path)
 done
 EOF
-	fi
-done
-unset ruby_root ruby_ver ruby_eng key
+		fi
+	done
+	unset ruby_root ruby_ver ruby_eng key gem_home
+}
 czruby_set_default "$RUBIES_DEFAULT"
 

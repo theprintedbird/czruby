@@ -1,59 +1,61 @@
 # The main function for the script which parses command-line arguments
 # and dispatches control to the appropriate function or displays information.
-case "$1" in
-	-h|--help)
-		printf "usage: czruby [RUBY|VERSION|system | --set-default RUBY] [RUBYOPT...]\n"
-		;;
-#			-V|--version)
-#				echo "czruby: $CZRUBY_VERSION"
-#				;;
-	"") # show available rubies
-		local marked ruby_root ruby_ver ruby_eng key
-		# rmarker is the marker for the selected ruby
-		# dmarker is the marker for the default ruby
-		# smarker is the marker for the system ruby
-		local rmarker dmarker smarker
-		local default=system
-		if [[ -r "$czruby_datadir/default" ]]; then
-			default="${$(greadlink -f "$czruby_datadir/default"):t}"
-		fi
-		typeset -A lines
-		print -Pn -f '%6s| %-11s| %-10s| %4s\n' -- " " engine version root
-		print -Pn -f '=%.0s' -- {1..40}
-		print -n '\n'
-		for ruby_root in $rubies; do
-			if [[ "$ruby_root" == "system" ]]; then
-				ruby_eng="ruby"
-				ruby_ver="2.6.10"
-				ruby_root="/usr"
-				key="system"
-			else
-				key="${ruby_root:t}"
-				if [[ "${ruby_root:t}" =~ "-" ]]; then
-					ruby_eng=${${ruby_root:t}:-ruby}
-					splits=(${(s[-])ruby_eng});
-					ruby_eng=$splits[1]
-					ruby_ver=$splits[2]
-				else
-					ruby_eng="ruby"
-					ruby_ver="${ruby_root:t}"
-				fi
+{
+	case "$1" in
+		-h|--help)
+			printf "usage: czruby [RUBY|VERSION|system | --set-default RUBY] [RUBYOPT...]\n"
+			;;
+	#			-V|--version)
+	#				echo "czruby: $CZRUBY_VERSION"
+	#				;;
+		"") # show available rubies
+			local marked ruby_root ruby_ver ruby_eng key
+			# rmarker is the marker for the selected ruby
+			# dmarker is the marker for the default ruby
+			# smarker is the marker for the system ruby
+			local rmarker dmarker smarker
+			local default=system
+			if [[ -r "$czruby_datadir/default" ]]; then
+				default="${$(greadlink -f "$czruby_datadir/default"):t}"
 			fi
-			[[ "$RUBY_ROOT" == "$ruby_root" ]] && rmarker="$FG[002]*%{$reset_color%} " && marked="true" || rmarker="  "
-			[[ "$default" == "$key" ]] && dmarker="$FG[199]*%{$reset_color%} " || dmarker="  "
-			[[ "$key" == "system" ]] && smarker="$FG[247]*%{$reset_color%} " || smarker="  "
+			typeset -A lines
+			print -Pn -f '%6s| %-11s| %-10s| %4s\n' -- " " engine version root
+			print -Pn -f '=%.0s' -- {1..40}
+			print -n '\n'
+			for ruby_root in $rubies; do
+				if [[ "$ruby_root" == "system" ]]; then
+					ruby_eng="ruby"
+					ruby_ver="2.6.10"
+					ruby_root="/usr"
+					key="system"
+				else
+					key="${ruby_root:t}"
+					if [[ "${ruby_root:t}" =~ "-" ]]; then
+						ruby_eng=${${ruby_root:t}:-ruby}
+						splits=(${(s[-])ruby_eng});
+						ruby_eng=$splits[1]
+						ruby_ver=$splits[2]
+					else
+						ruby_eng="ruby"
+						ruby_ver="${ruby_root:t}"
+					fi
+				fi
+				[[ "$RUBY_ROOT" == "$ruby_root" ]] && rmarker="$FG[002]*%{$reset_color%} " && marked="true" || rmarker="  "
+				[[ "$default" == "$key" ]] && dmarker="$FG[199]*%{$reset_color%} " || dmarker="  "
+				[[ "$key" == "system" ]] && smarker="$FG[247]*%{$reset_color%} " || smarker="  "
 
-			print -Pn -f '%2b%2b%2b %-12s %-11s %s%s\n' -- $rmarker $dmarker $smarker ${ruby_eng} $ruby_ver "${ruby_root}" "%{$reset_color%}"
-			unset rmarker dmarker smarker
-		done
-		print -Pn -f '\n%b %b %b' "$FG[002]current%{$reset_color%}" "$FG[199]default%{$reset_color%}" "$FG[247]system%{$reset_color%}\n"
-		unset marked rmarker ruby_root ruby_eng ruby_ver
-		;;
-	--set-default)	shift;
-									czruby_set_default $1
-									;;
-	system) czruby_reset system ;;
-	default) czruby_reset ;;
-	*) czruby_use $1 ;;
-esac
-:
+				print -Pn -f '%2b%2b%2b %-12s %-11s %s%s\n' -- $rmarker $dmarker $smarker ${ruby_eng} $ruby_ver "${ruby_root}" "%{$reset_color%}"
+				unset rmarker dmarker smarker
+			done
+			print -Pn -f '\n%b %b %b' "$FG[002]current%{$reset_color%}" "$FG[199]default%{$reset_color%}" "$FG[247]system%{$reset_color%}\n"
+			unset marked rmarker ruby_root ruby_eng ruby_ver
+			;;
+		--set-default)	shift;
+										czruby_set_default $1
+										;;
+		system) czruby_reset system ;;
+		default) czruby_reset default ;;
+		*) czruby_use $1 ;;
+	esac
+
+}
