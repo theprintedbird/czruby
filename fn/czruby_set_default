@@ -10,7 +10,7 @@
 
 	if [[ -f "$czruby_datadir/${choice}" ]]; then
 		RUBIES_DEFAULT="$choice"
-		[[ -h "$czruby_datadir/default" ]] && rm "$czruby_datadir/default"
+		[[ -e "$czruby_datadir/default" ]] && rm "$czruby_datadir/default"
 		ln -s "$czruby_datadir/${RUBIES_DEFAULT}" "$czruby_datadir/default"
 	else
 		printf "That ruby has not been set up, please run czruby_setup\n\n"
