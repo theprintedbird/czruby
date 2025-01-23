@@ -1,0 +1,56 @@
+# Removes files from czruby_datadir that point to non-existent Ruby installations
+czruby_purge() {
+  local file key ruby_root default_ruby
+	local purged=0
+
+  # Check if datadir exists
+  if [[ ! -d "$czruby_datadir" ]]; then
+    printf "czruby: no data directory found at %s\n" "$czruby_datadir" >&2
+    return 1
+  fi
+
+  # Store current default ruby
+  default_ruby="$(greadlink -f "$czruby_datadir/default" 2>/dev/null)"
+  default_ruby="${default_ruby:t}"
+
+  # Process each file in czruby_datadir
+  for file in "$czruby_datadir"/*; do
+    [[ -f "$file" ]] || continue
+    key="${file:t}"
+
+    # Skip the default symlink
+    [[ "$key" == "default" ]] && continue
+
+    # For system Ruby, verify /usr/bin/ruby exists
+    if [[ "$key" == "system" ]]; then
+      if [[ ! -x "/usr/bin/ruby" ]]; then
+        rm "$file"
+        ((purged++))
+      fi
+      continue
+    fi
+
+    # Check if ruby_root exists in $rubies array
+    ruby_root=""
+    for r in $rubies; do
+      if [[ "${r:t}" == "$key" ]]; then
+        ruby_root="$r"
+        break
+      fi
+    done
+
+    # If ruby not found in $rubies or directory doesn't exist, remove the file
+    if [[ -z "$ruby_root" ]] || [[ ! -d "$ruby_root" ]]; then
+      rm "$file"
+      ((purged++))
+
+      # If this was the default, remove the default symlink
+      if [[ "$key" == "$default_ruby" ]]; then
+        rm "$czruby_datadir/default"
+        czruby_set_default system
+      fi
+    fi
+  done
+
+  printf "czruby: purged %d invalid configurations\n" "$purged"
+}

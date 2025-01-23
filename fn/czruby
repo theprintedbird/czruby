@@ -3,7 +3,7 @@
 {
 	case "$1" in
 		-h|--help)
-			printf "usage: czruby [RUBY|VERSION|system | --set-default RUBY] [RUBYOPT...]\n"
+			printf "usage: czruby [RUBY|VERSION|system | --set-default RUBY | --purge ] [RUBYOPT...]\n"
 			;;
 	#			-V|--version)
 	#				echo "czruby: $CZRUBY_VERSION"
@@ -16,7 +16,7 @@
 			local rmarker dmarker smarker
 			local default=system
 			if [[ -r "$czruby_datadir/default" ]]; then
-				default="${$(greadlink -f "$czruby_datadir/default"):t}"
+				default="${$(grealpath -e "$czruby_datadir/default"):t}"
 			fi
 			typeset -A lines
 			print -Pn -f '%6s| %-11s| %-10s| %4s\n' -- " " engine version root
@@ -55,6 +55,7 @@
 										;;
 		system) czruby_reset system ;;
 		default) czruby_reset default ;;
+		--purge) czruby_purge ;;
 		*) czruby_use $1 ;;
 	esac
 

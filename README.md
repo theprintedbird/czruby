@@ -151,7 +151,7 @@ I actually keep my rubies in `~/Library/Frameworks/Ruby.framework` because Apple
 ```shell
 czruby_custom_init(){
 	for name in $HOME/Library/Frameworks/Ruby.framework/Versions/*; do
-		canon=$(greadlink -f "$name")
+		canon=$(grealpath -e "$name")
 		if [[ ${canon:t} != "Current" ]]; then
 			rubies=("$canon" $rubies)
 		fi
