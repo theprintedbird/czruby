@@ -3,11 +3,22 @@
 {
 	case "$1" in
 		-h|--help)
-			printf "usage: czruby [RUBY|VERSION|system | --set-default RUBY | --purge ] [RUBYOPT...]\n"
+			printf "Usage:\nczruby [RUBY|VERSION|system | --set-default RUBY | --purge | -V | --version | -h | --help ]\n"
+			print ""
+			print -Pn -f "%-30s\t%s\n" -- "czruby" "# With no arguments, show available Rubies and status"
+			print -Pn -f "%-30s\t%s\n" -- "czruby system" "# Choose the system Ruby"
+			print -Pn -f "%-30s\t%s\n" -- "czruby <name of ruby>" "# Choose a Ruby by name e.g. truffleruby"
+			print -Pn -f "%-30s\t%s\n" -- "czruby <ruby version number>" "# Choose a Ruby by version e.g. 3.3.0"
+			print ""
+			printf "Options:\n"
+			print -Pn -f "%-20s %s\n" -- "-h --help" "Print this help"
+			print -Pn -f "%-20s %s\n" -- "-V --version" "czruby version"
+			print -Pn -f "%-20s %s\n" -- "--set-default RUBY" "Set the default Ruby version"
+			print -Pn -f "%-20s %s\n" -- "--purge" "Remove invalid configs"
 			;;
-	#			-V|--version)
-	#				echo "czruby: $CZRUBY_VERSION"
-	#				;;
+			-V|--version)
+				print "2.0.0"
+				;;
 		"") # show available rubies
 			local marked ruby_root ruby_ver ruby_eng key
 			# rmarker is the marker for the selected ruby
