@@ -8,54 +8,102 @@ viewBox="0 0 110 110">
 			color-scheme: light dark;
 			--text-colour: #C82536;
 			--stroke-colour: #862A51;
+			--light-colour: #FBEC5D;
+			--light-stroke-width: 0.8;
 		}
 
 		@media (prefers-color-scheme: dark) {
 			:root {
 				--text-colour: #8E2323;
 				--stroke-colour: #422C2F;
+				--light-colour: #FF6EB4;
+				--light-stroke-width: 0.3;
 			}
 		}
+
 		text {
 			font-family: Impact;
 			font-weight: bold;
 			font-size: 40px;
 			fill: var(--text-colour);
 		}
+
 		#rubyword {
 			font-size: 20px;
 		}
-		rect {
+
+		.face-rect {
 			stroke: var(--stroke-colour);
 			stroke-width: 1;
 			fill: var(--stroke-colour);
 			fill-opacity: 0;
 		}
+
+		.light-dash {
+			stroke: var(--light-colour);
+			stroke-width: var(--light-stroke-width);
+			fill: none;
+			stroke-dasharray: 20 180;
+			stroke-dashoffset: 0;
+			opacity: 0; /* Hidden by default */
+		}
+
+		@keyframes dashSweep {
+			0% {
+				opacity: 0;
+				stroke-dashoffset: 0;
+			}
+			0.1% { /* Show dash early in the cycle */
+				opacity: 0.7;
+				stroke-dashoffset: 0;
+			}
+			0.7% {
+				opacity: 1;
+				stroke-dashoffset: -200;
+			}
+			0.8% {
+				opacity: 0;
+				stroke-dashoffset: -200;
+			}
+			100% {
+				opacity: 0;
+				stroke-dashoffset: -200;
+			}
+		}
+
+		/* Apply animation to each face with delays */
+		#topFace .light-dash {
+			animation: dashSweep 30s linear infinite;
+			animation-delay: 0.1s;
+		}
+
+		#leftFace .light-dash {
+			animation: dashSweep 30s linear infinite;
+			animation-delay: 0.1s;
+		}
+
+		#rightFace .light-dash {
+			animation: dashSweep 30s linear infinite;
+			animation-delay: 0s;
+		}
 	</style>
-  <defs>
-    <rect id="square" width="50" height="50" />
-  </defs>
-  
-  <!-- Top face -->
-	<g transform="matrix(0.866, -0.5, 0.866, 0.5, 10, 30)">
-		<use href="#square" />
+	<g id="topFace" transform="matrix(0.866, -0.5, 0.866, 0.5, 10, 30)">
+		<rect class="face-rect" width="50" height="50" />
+		<rect class="light-dash" width="50" height="50" />
     <g transform="scale(1, 2) translate(0, -12)">
 			<text id="rubyword" x="25" y="32" text-anchor="middle">RUBY</text>
     </g>
 	</g>
-  
-  <!-- Left face -->
-	<g transform="matrix(0.866, 0.5, 0, 1, 9.56, 30.76)">
-		<use href="#square" />
+	<g id="leftFace" transform="matrix(0.866, 0.5, 0, 1, 9.56, 30.76)">
+		<rect class="face-rect" width="50" height="50" />
+		<rect class="light-dash" width="50" height="50" />
     <g transform="scale(1.5, 1) translate(-8, 0)">
 			<text x="25" y="40" text-anchor="middle" >C</text>
 		</g>
 	</g>
-
-  <!-- Right face -->
-	<!-- <g transform="matrix(-0.866, 0.5, 0, 1, 137, 25.78)"> -->
-  <g transform="matrix(0.866, -0.5, 0, 1, 53.73, 55.76)">
-		<use href="#square" />
+  <g id="rightFace" transform="matrix(0.866, -0.5, 0, 1, 53.73, 55.76)">
+		<rect class="face-rect" width="50" height="50" />
+		<rect class="light-dash" width="50" height="50" />
     <g transform="scale(2, 1) translate(-12, 0)">
     <text x="25" y="40" text-anchor="middle" >Z</text>
 		</g>
