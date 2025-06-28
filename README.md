@@ -1,6 +1,7 @@
+<img src="czruby-logo.svg" alt="CZRuby logo" width="50%"/>
+
 # Czruby - easy Ruby version management for Z-Shell
 
-<img src="czruby-logo.svg" />
 
 **czruby** | tʃeɪn(d)ʒˈruːbi |  
 **noun**  
@@ -11,7 +12,9 @@
 
 ORIGIN  
 ------  
+
 mid 21st century: phonologically Polish portmanteu of ***chruby*** and ***Z-shell***.
+
 
 - [Usage](#usage)
 - [Dependencies](#dependencies)
