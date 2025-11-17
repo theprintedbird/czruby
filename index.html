@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CZ Ruby - Easy Ruby version management for Z-Shell</title>
+	<style>
+		:root {
+			color-scheme: light dark;
+			--bg-color: #ffffff;
+			--text-color: #333333;
+			--link-color: #0066cc;
+			--link-hover: #004499;
+			--banner-bg: #f5f5f5;
+			--code-bg: #f4f4f4;
+			--border-color: #dddddd;
+			--blockquote-bg: #f9f9f9;
+			--blockquote-border: #cccccc;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--bg-color: #1a1a1a;
+				--text-color: #e0e0e0;
+				--link-color: #6ba3ff;
+				--link-hover: #99c2ff;
+				--banner-bg: #252525;
+				--code-bg: #2d2d2d;
+				--border-color: #444444;
+				--blockquote-bg: #252525;
+				--blockquote-border: #444444;
+			}
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+			line-height: 1.6;
+			background-color: var(--bg-color);
+			color: var(--text-color);
+		}
+
+		.banner {
+			background-color: var(--banner-bg);
+			border-bottom: 1px solid var(--border-color);
+			padding: 1rem 2rem;
+			display: flex;
+			align-items: center;
+			gap: 1.5rem;
+		}
+
+		.banner img {
+			height: 80px;
+			width: auto;
+		}
+
+		.banner h1 {
+			font-size: 2rem;
+			font-weight: 700;
+		}
+
+		nav {
+			background-color: var(--banner-bg);
+			border-bottom: 1px solid var(--border-color);
+			padding: 0.75rem 2rem;
+			position: sticky;
+			top: 0;
+			z-index: 100;
+		}
+
+		nav ul {
+			list-style: none;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1.5rem;
+			justify-content: center;
+		}
+
+		nav a {
+			color: var(--link-color);
+			text-decoration: none;
+			font-weight: 500;
+		}
+
+		nav a:hover {
+			color: var(--link-hover);
+			text-decoration: underline;
+		}
+
+		main {
+			max-width: 700px;
+			margin: 0 auto;
+			padding: 2rem;
+		}
+
+		blockquote {
+			background-color: var(--blockquote-bg);
+			border-left: 4px solid var(--blockquote-border);
+			padding: 1rem 1.5rem;
+			margin: 2rem 0;
+		}
+
+		blockquote p {
+			margin: 0.5rem 0;
+		}
+
+		section {
+			margin: 3rem 0;
+		}
+
+		h2 {
+			font-size: 1.75rem;
+			margin-bottom: 1rem;
+			border-bottom: 1px solid var(--border-color);
+			padding-bottom: 0.5rem;
+		}
+
+		h3 {
+			font-size: 1.25rem;
+			margin: 1.5rem 0 0.75rem;
+		}
+
+		p {
+			margin: 1rem 0;
+		}
+
+		ul, ol {
+			margin: 1rem 0 1rem 2rem;
+		}
+
+		li {
+			margin: 0.5rem 0;
+		}
+
+		code {
+			background-color: var(--code-bg);
+			padding: 0.2rem 0.4rem;
+			border-radius: 3px;
+			font-family: 'Courier New', Courier, monospace;
+			font-size: 0.9em;
+		}
+
+		pre {
+			background-color: var(--code-bg);
+			padding: 1rem;
+			border-radius: 5px;
+			overflow-x: auto;
+			margin: 1rem 0;
+		}
+
+		pre code {
+			background-color: transparent;
+			padding: 0;
+		}
+
+		a {
+			color: var(--link-color);
+			text-decoration: none;
+		}
+
+		a:hover {
+			color: var(--link-hover);
+			text-decoration: underline;
+		}
+
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+
+		strong {
+			font-weight: 600;
+		}
+
+		hr {
+			border: none;
+			border-top: 1px solid var(--border-color);
+			margin: 2rem 0;
+		}
+	</style>
+</head>
+<body>
+	<header class="banner">
+		<img src="czruby-logo.svg" alt="CZ Ruby logo">
+		<h1>CZ Ruby</h1>
+	</header>
+
+	<nav>
+		<ul>
+			<li><a href="#usage">Usage</a></li>
+			<li><a href="#dependencies">Dependencies</a></li>
+			<li><a href="#install">Install</a></li>
+			<li><a href="#setup">Setup</a></li>
+			<li><a href="#example">An Example</a></li>
+			<li><a href="#how-it-works">How it works</a></li>
+			<li><a href="#what-it-doesnt-do">What it doesn't do</a></li>
+			<li><a href="#licence">Licence</a></li>
+		</ul>
+	</nav>
+
+	<main>
+		<article>
+			<blockquote>
+				<p><strong>czruby</strong> | tʃeɪn(d)ʒˈruːbi |</p>
+				<p><strong>noun</strong><br>
+				1 <strong>an app or plugin for Z-shell or (less formerly) zsh, that is partly descended from <a href="https://github.com/postmodern/chruby">chruby</a>.</strong></p>
+				<p><strong>verb</strong><br>
+				1 <em>[with object, with complement]</em> <strong>make <a href="https://www.ruby-lang.org/en/">Ruby</a> or its related environment change or become different:</strong>: <em>please change to the system Ruby instead</em></p>
+				<p><strong>ORIGIN</strong></p>
+				<p>mid 21st century: phonologically Polish portmanteu of <em><strong>chruby</strong></em> and <em><strong>Z-shell</strong></em>.</p>
+			</blockquote>
+
+			<section id="usage">
+				<h2>Usage</h2>
+				<p>Running the following commands would bring the following outcomes:</p>
+				<p><code>czruby 3.0.0</code> would change the current ruby to Ruby v3.0.0</p>
+				<p><code>czruby truffleruby</code> would change (on my system) to TruffleRuby v21.1.0 because I only have one version of TruffleRuby. If I had more it would show an error.</p>
+				<p><code>czruby truffleruby-21.1.0</code> would then be the correct command to use (I could use that anyway)</p>
+				<p>Help is available via <code>czruby -h</code>.</p>
+				<p><code>czruby --set-default 2.7.0</code> would set the default ruby, temporarily, to Ruby v2.7.0 and change to it. It's only temporary because you'll probably set the default ruby via <code>RUBIES_DEFAULT</code> in your <code>~/.zshenv</code>.</p>
+				<p><code>czruby</code> with no arguments will show you:</p>
+				<ul>
+					<li>all the installed rubies it knows about</li>
+					<li>all their paths</li>
+					<li>the currently selected ruby</li>
+					<li>the default ruby</li>
+					<li>the system ruby</li>
+				</ul>
+			</section>
+
+			<section id="dependencies">
+				<h2>Dependencies</h2>
+				<ul>
+					<li>Z-shell</li>
+					<li>Use of <a href="https://specifications.freedesktop.org/basedir-spec/latest/ar01s02.html">XDG</a> environment variables</li>
+				</ul>
+			</section>
+
+			<section id="install">
+				<h2>Install</h2>
+				<p>It only needs to be <code>source</code>d, so put it wherever is convenient for doing so (probably loaded by zshrc).</p>
+			</section>
+
+			<section id="setup">
+				<h2>Setup and things you should know</h2>
+				<p>First, set the <code>XDG_CONFIG_HOME</code>, <code>XDG_CACHE_HOME</code> and <code>XDG_DATA_HOME</code> environment variables. I have mine set in <code>~/.zshenv</code> as follows:</p>
+				<pre><code>export XDG_CONFIG_HOME="${HOME}/Library/Application Support"
+export XDG_DATA_HOME="$XDG_CONFIG_HOME"
+export XDG_CACHE_HOME="$HOME/Library/Caches"</code></pre>
+				<p>You don't have to do that, it's just an example, but they do need to be set to <em>something</em>.</p>
+				<p>The <code>RUBIES_DEFAULT</code> environment variable tells czruby which Ruby version to use as default. If you don't set it then the default default is <code>system</code>, which on a Mac is v2.3.7. (You can also set it temporarily, more on that later).</p>
+				<p>The <code>RUBIES</code> environment variable holds the paths of installed rubies. If you want to add one then this is the kind of thing you might do:</p>
+				<pre><code>rubies=(path/to/ruby/containing/the/bin/dir $rubies)</code></pre>
+				<p>For example, given this:</p>
+				<pre><code>$ tree -L 1 ~/.rubies/2.7.0
+/Users/iainb/.rubies/2.7.0
+├── bin
+├── include
+├── lib
+└── share</code></pre>
+				<p>then this would be the real command:</p>
+				<pre><code>rubies=("$HOME/.rubies/2.7.0" $rubies)</code></pre>
+				<p>So, you can add rubies installed from anywhere. Since you'll probably want to do this on shell init there is help in the form of the <code>czruby_custom_init</code>. Czruby will call it (if defined) during its init phase of your shell (or whenever else you source the czruby file).</p>
+			</section>
+
+			<section id="example">
+				<h3>An example</h3>
+				<p>Let's imagine you've got all your rubies installed in <code>~/.rubies</code>:</p>
+				<pre><code>$ tree -L 1 ~/.rubies
+~/.rubies
+├── 2.5.0
+├── 2.5.1
+├── 2.6.0
+├── 2.6.2
+├── 2.6.3
+├── 2.7.0
+├── jruby-9.1.16.0
+└── truffleruby-21.1.0</code></pre>
+				<p>I put this in my <code>~/.zshenv</code>:</p>
+				<pre><code>export RUBIES_DEFAULT="2.7.0"
+
+czruby_custom_init(){
+	for name in $HOME/.rubies/*; do
+		rubies=("$name" $rubies)
+	done
+}</code></pre>
+				<p>Then if I run <code>czruby</code>:</p>
+				<pre><code>$ czruby
+      | engine     | version   | root
+========================================
+    *  ruby         2.3.7       /usr
+       truffleruby  21.1.0      ~/.rubies/truffleruby-21.1.0
+       jruby        9.1.16.0    ~/.rubies/jruby-9.1.16.0
+* *    ruby         2.7.0       ~/.rubies/2.7.0
+       ruby         2.6.3       ~/.rubies/2.6.3
+       ruby         2.6.2       ~/.rubies/2.6.2
+       ruby         2.6.0       ~/.rubies/2.6.0
+       ruby         2.5.1       ~/.rubies/2.5.1
+       ruby         2.5.0       ~/.rubies/2.5.0
+
+current default system</code></pre>
+				<p>or in colour:</p>
+				<p><img src="https://user-images.githubusercontent.com/326444/118755033-ac75d100-b857-11eb-80e2-b4073806cdae.png" alt="Screenshot of chruby detailing the current status and availability of rubies"></p>
+				<p>I actually keep my rubies in <code>~/Library/Frameworks/Ruby.framework</code> because Apple have a <a href="https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPFrameworks/Concepts/FrameworkAnatomy.html">useful specification</a> that is organised a lot like <a href="https://www.gnu.org/software/stow/manual/stow.html">GNU Stow</a> (another useful app). This means my <code>~/.zshenv</code> has this:</p>
+				<pre><code>czruby_custom_init(){
+	for name in $HOME/Library/Frameworks/Ruby.framework/Versions/*; do
+		canon=$(greadlink -f "$name")
+		if [[ ${canon:t} != "Current" ]]; then
+			rubies=("$canon" $rubies)
+		fi
+	done
+}</code></pre>
+				<p>I use <a href="http://www.gnu.org/software/coreutils/manual/html_node/readlink-invocation.html">GNU readlink</a> (because the Mac version isn't really up to snuff) to make sure that symbolic links are handled properly. (It can be installed via the coreutils package, <a href="https://www.macports.org/">Macports</a> and <a href="https://pkgsrc.joyent.com/install-on-osx/">pkgsrc</a> have it, homebrew surely does too).</p>
+			</section>
+
+			<section id="how-it-works">
+				<h2>How does it work?</h2>
+				<p>Good question!</p>
+				<p>During czruby's init phase it will write some files to <code>$XDG_DATA_HOME/czruby</code> (which is why you should set those XDG vars). Here's the one it wrote for my <code>system</code> ruby:</p>
+				<pre><code>export RUBY_ENGINE="ruby"
+export RUBY_ROOT="/usr"
+export RUBY_VERSION="2.3.7"
+export GEM_HOME=$(gem_calc_home)
+gem_path=($GEM_HOME "/usr/lib/ruby/gems/2.3.7" $gem_path)
+path=("$RUBY_ROOT/bin" $path)
+local bin
+for place in ${(Oa)gem_path}; do
+  bin="$place/bin"
+    path=("$bin" $path)
+done
+unset bin</code></pre>
+				<p>Then, when you ask for a different Ruby, it simply sources the file associated with the Ruby.</p>
+				<ul>
+					<li>It removes all the current Ruby's environment, removes bits from <code>PATH</code> etc</li>
+					<li>It sets up the <code>PATH</code> with installed gem executables first, then the gems installed with Ruby, then Ruby's bin directory.</li>
+					<li>It sets up the <code>GEM_HOME</code> env var to be in <code>$XDG_CACHE_HOME/Ruby</code>.</li>
+					<li>It sets up the <code>GEM_PATH</code> properly too.</li>
+				</ul>
+				<p>You also get some helpful env vars set:</p>
+				<ul>
+					<li><code>RUBY_ROOT</code> e.g. <code>~/.rubies/2.6.3</code></li>
+					<li><code>RUBY_ENGINE</code> e.g. ruby or jruby etc</li>
+					<li><code>RUBY_VERSION</code> e.g. 2.6.3</li>
+					<li><code>RUBIES_DEFAULT</code> e.g. 2.7.0</li>
+					<li><code>RUBIES</code>, which will list all the Ruby roots</li>
+				</ul>
+				<p>and these helpful zsh arrays (which you probably won't use but it's good to know they're there):</p>
+				<ul>
+					<li><code>$gem_path</code></li>
+					<li><code>$rubies</code></li>
+				</ul>
+			</section>
+
+			<section id="what-it-doesnt-do">
+				<h2>What doesn't it do?</h2>
+				<p>It doesn't automatically change to a ruby when entering a directory with a .ruby-version file or anything like that. I'm not really interested in that - use Vagrant or Docker or something like that, the version file is a solution for a problem that (should) no longer persist.</p>
+			</section>
+
+			<section id="why-not-chruby">
+				<h2>Why not chruby?</h2>
+				<p>I like chruby the best of all the version managers but it's taking an <em>age</em> to get a new release and I get the dreaded <a href="https://stackoverflow.com/questions/38797458/ignoring-gem-because-its-extensions-are-not-built">Ignoring gem… because its extensions are not built</a> error and nothing fixes it other than not using chruby.</p>
+				<p>Also, I wanted to have it fit my set up better, and it does.</p>
+			</section>
+
+			<section id="so-thats-that">
+				<h2>So that's that</h2>
+				<p>If you find this useful or think it can be improved, do let me know, I'm open to suggestions. This does, however, work well for me and my setup.</p>
+			</section>
+
+			<section id="licence">
+				<h2>Licence</h2>
+				<p>See Licence.txt</p>
+			</section>
+		</article>
+	</main>
+</body>
+</html>
