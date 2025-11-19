@@ -53,8 +53,38 @@ jobs:
             fn/* czruby.plugin.conf || true
           echo "ShellCheck completed"
 
-  functional-tests:
-    name: Functional Tests
+  comprehensive-tests:
+    name: Comprehensive Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zsh ruby coreutils
+
+      - name: Set up test environment
+        run: |
+          mkdir -p "$HOME/.local/share"
+          mkdir -p "$HOME/.cache"
+          mkdir -p "$HOME/.config"
+          chmod +x test/run_all_tests.zsh
+          chmod +x test/test_*.zsh
+
+      - name: Run comprehensive test suite
+        shell: zsh {0}
+        run: |
+          # Set up XDG directories
+          export XDG_DATA_HOME="$HOME/.local/share"
+          export XDG_CACHE_HOME="$HOME/.cache"
+          export XDG_CONFIG_HOME="$HOME/.config"
+
+          # Run all tests
+          zsh test/run_all_tests.zsh
+
+  legacy-tests:
+    name: Legacy Functional Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -69,7 +99,7 @@ jobs:
           mkdir -p "$HOME/.local/share"
           mkdir -p "$HOME/.cache"
 
-      - name: Run functional tests
+      - name: Run legacy tests
         shell: zsh {0}
         run: |
           # Set up XDG directories
@@ -134,4 +164,4 @@ jobs:
           fi
 
           echo ""
-          echo "All functional tests passed!"
+          echo "All legacy tests passed!"
