@@ -9,8 +9,12 @@ czruby_purge() {
     return 1
   fi
 
-  # Store current default ruby
-  default_ruby="$(greadlink -f "$czruby_datadir/default" 2>/dev/null)"
+  # Store current default ruby (use readlink on Linux, greadlink on macOS)
+  if command -v greadlink &>/dev/null; then
+    default_ruby="$(greadlink -f "$czruby_datadir/default" 2>/dev/null)"
+  else
+    default_ruby="$(readlink -f "$czruby_datadir/default" 2>/dev/null)"
+  fi
   default_ruby="${default_ruby:t}"
 
   # Process each file in czruby_datadir
@@ -44,10 +48,14 @@ czruby_purge() {
       rm "$file"
       ((purged++))
 
-      # If this was the default, remove the default symlink
+      # If this was the default, reset to system
       if [[ "$key" == "$default_ruby" ]]; then
-        rm "$czruby_datadir/default"
-        czruby_set_default system
+        rm -f "$czruby_datadir/default"
+        RUBIES_DEFAULT="system"
+        # Create symlink to system config if it exists
+        if [[ -f "$czruby_datadir/system" ]]; then
+          ln -fs "$czruby_datadir/system" "$czruby_datadir/default"
+        fi
       fi
     fi
   done
