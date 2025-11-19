@@ -18,7 +18,8 @@ czruby_purge() {
   default_ruby="${default_ruby:t}"
 
   # Process each file in czruby_datadir
-  for file in "$czruby_datadir"/*; do
+  # Use (N) glob qualifier to handle empty directory without error
+  for file in "$czruby_datadir"/*(N); do
     [[ -f "$file" ]] || continue
     key="${file:t}"
 
