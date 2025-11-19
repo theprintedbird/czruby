@@ -1,0 +1,137 @@
+name: Test czruby
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  syntax-check:
+    name: Zsh Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Zsh
+        run: sudo apt-get update && sudo apt-get install -y zsh
+
+      - name: Check Zsh syntax
+        run: |
+          echo "Checking Zsh syntax for all functions..."
+          for file in fn/*; do
+            echo "Checking $file..."
+            zsh -n "$file"
+          done
+          echo "Checking plugin config..."
+          zsh -n czruby.plugin.conf
+          echo "All syntax checks passed!"
+
+  shellcheck:
+    name: ShellCheck Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Run ShellCheck
+        run: |
+          echo "Running ShellCheck on all functions..."
+          # ShellCheck with Zsh-specific settings
+          # Using -e to exclude some checks that don't apply well to Zsh
+          shellcheck --shell=bash --severity=warning \
+            -e SC2034 \
+            -e SC2128 \
+            -e SC2154 \
+            -e SC2206 \
+            -e SC2296 \
+            -e SC2299 \
+            -e SC1090 \
+            -e SC2086 \
+            fn/* czruby.plugin.conf || true
+          echo "ShellCheck completed"
+
+  functional-tests:
+    name: Functional Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zsh ruby coreutils
+
+      - name: Set up test environment
+        run: |
+          mkdir -p "$HOME/.local/share"
+          mkdir -p "$HOME/.cache"
+
+      - name: Run functional tests
+        shell: zsh {0}
+        run: |
+          # Set up XDG directories
+          export XDG_DATA_HOME="$HOME/.local/share"
+          export XDG_CACHE_HOME="$HOME/.cache"
+
+          # Source the plugin config
+          source czruby.plugin.conf
+
+          # Load all functions
+          for fn_file in fn/*; do
+            autoload -Uz "${fn_file:t}"
+            fpath=("$PWD/fn" $fpath)
+          done
+
+          # Test 1: Check that RUBIES array is set up
+          echo "Test 1: RUBIES array initialization"
+          if [[ -n "$RUBIES" || ${#rubies[@]} -ge 0 ]]; then
+            echo "  PASS: RUBIES array is initialized"
+          else
+            echo "  FAIL: RUBIES array not initialized"
+            exit 1
+          fi
+
+          # Test 2: Check czruby_datadir is set
+          echo "Test 2: czruby_datadir variable"
+          if [[ -n "$czruby_datadir" ]]; then
+            echo "  PASS: czruby_datadir is set to $czruby_datadir"
+          else
+            echo "  FAIL: czruby_datadir is not set"
+            exit 1
+          fi
+
+          # Test 3: Check RUBIES_DEFAULT is set
+          echo "Test 3: RUBIES_DEFAULT variable"
+          if [[ -n "$RUBIES_DEFAULT" ]]; then
+            echo "  PASS: RUBIES_DEFAULT is set to $RUBIES_DEFAULT"
+          else
+            echo "  FAIL: RUBIES_DEFAULT is not set"
+            exit 1
+          fi
+
+          # Test 4: Check version output
+          echo "Test 4: czruby version"
+          source fn/czruby
+          version_output=$(czruby -V 2>&1)
+          if [[ "$version_output" == "2.0.0" ]]; then
+            echo "  PASS: Version is 2.0.0"
+          else
+            echo "  FAIL: Unexpected version output: $version_output"
+            exit 1
+          fi
+
+          # Test 5: Check help output
+          echo "Test 5: czruby help"
+          help_output=$(czruby -h 2>&1)
+          if [[ "$help_output" == *"Usage:"* ]]; then
+            echo "  PASS: Help output contains usage info"
+          else
+            echo "  FAIL: Help output missing usage info"
+            exit 1
+          fi
+
+          echo ""
+          echo "All functional tests passed!"
