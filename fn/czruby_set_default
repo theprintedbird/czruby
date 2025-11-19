@@ -1,7 +1,8 @@
 # Sets the default Ruby environment to use when no specific version is specified.
 {
+	# Check for empty argument before applying default
+	[[ -z "$1" ]] && return 1
 	local choice="${1:-system}"
-	[[ -z $choice ]] && return 1
 	if [[ -z ${(M)rubies:#*$choice} ]]; then
 		print "That ruby is not available\n\n"
 		czruby
