@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: czruby-test:latest
+    volumes:
+      # Mount code for live updates during development
+      - .:/app
+    environment:
+      - XDG_DATA_HOME=/tmp/czruby-data
+      - XDG_CACHE_HOME=/tmp/czruby-cache
+      - XDG_CONFIG_HOME=/tmp/czruby-config
+    # Allocate TTY for colored output
+    tty: true
+    # Keep stdin open for interactive use
+    stdin_open: true
+    # Default: run all tests
+    command: zsh test/run_all_tests.zsh
+
+  # Additional service profiles for different use cases
+  shell:
+    extends: test
+    command: zsh
+    profiles:
+      - debug

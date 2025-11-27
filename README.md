@@ -19,6 +19,7 @@ mid 21st century: phonologically Polish portmanteu of ***chruby*** and ***Z-shel
 - [Usage](#usage)
 - [Dependencies](#dependencies)
 - [Install](#install)
+- [Running Tests](#running-tests)
 - [Setup and things you should know](#setup-and-things-you-should-know)
 - [An example](#an-example)
 - [How does it work?](#how-does-it-work-)
@@ -57,6 +58,52 @@ Help is available via `czruby -h`.
 ## <a name="install">Install</a>
 
 It only needs to be `source`d, so put it wherever is convenient for doing so (probably loaded by zshrc).
+
+## <a name="running-tests">Running Tests</a>
+
+czruby has a comprehensive test suite that can be run either in containers (recommended) or natively.
+
+### Using Containers (Recommended)
+
+The easiest way to run tests is using Docker or Podman. No additional dependencies required on your machine:
+
+```bash
+# Run all tests
+./scripts/test-container.sh
+
+# Run specific test file
+./scripts/test-container.sh test/test_czruby_setup.zsh
+
+# Interactive debugging shell
+./scripts/test-shell.sh
+```
+
+Using Docker Compose:
+
+```bash
+# Run all tests
+docker compose up test
+
+# Interactive shell
+docker compose run --rm shell
+```
+
+### Native Testing
+
+If you prefer to run tests natively, you'll need:
+- zsh (version 5.x+)
+- ruby
+- coreutils (for `realpath` or `grealpath`)
+
+```bash
+# Run all tests
+zsh test/run_all_tests.zsh
+
+# Run specific test suite
+zsh test/test_czruby_setup.zsh
+```
+
+For detailed testing instructions, debugging tips, and contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## <a name="setup-and-things-you-should-know">Setup and things you should know</a>
 

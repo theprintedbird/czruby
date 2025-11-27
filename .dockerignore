@@ -1,0 +1,45 @@
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (frequently changing)
+*.md
+!CLAUDE.md
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.iml
+.project
+.settings/
+*.sublime-*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Test artifacts (will be recreated in container)
+test/tmp/
+.test-*
+
+# CI/CD files (not needed in container)
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Container files (avoid recursion)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Plans directory
+.claude/
