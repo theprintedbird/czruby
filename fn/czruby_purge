@@ -10,7 +10,7 @@ czruby_purge() {
   fi
 
   # Store current default ruby
-  default_ruby="$(greadlink -f "$czruby_datadir/default" 2>/dev/null)"
+  default_ruby="$(czruby_realpath "$czruby_datadir/default" 2>/dev/null)"
   default_ruby="${default_ruby:t}"
 
   # Process each file in czruby_datadir
