@@ -25,12 +25,10 @@
 	unset excludes
 
 	# Source the configuration file for the specified Ruby environment.
-	# Verify the file's readability and source it or call 
+	# Verify the file's readability and source it or call
 	# setup if the file is not found.
 	# Finally, source the file
-	if [[ ! -f "$czruby_datadir/$ver" ]]; then
-		print "$czruby_datadir/$ver not found"
-	fi
+	# Config file check - setup will create if needed
 	if [[ -r "$czruby_datadir/$ver" ]]; then
 		source "$czruby_datadir/$ver"
 	else
