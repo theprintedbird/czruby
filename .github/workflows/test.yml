@@ -146,8 +146,8 @@ jobs:
           echo "Test 4: czruby version"
           source fn/czruby
           version_output=$(czruby -V 2>&1)
-          if [[ "$version_output" == "2.0.0" ]]; then
-            echo "  PASS: Version is 2.0.0"
+          if [[ "$version_output" == "3.0.0" ]]; then
+            echo "  PASS: Version is 3.0.0"
           else
             echo "  FAIL: Unexpected version output: $version_output"
             exit 1

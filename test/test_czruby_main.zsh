@@ -33,7 +33,7 @@ test_version_output() {
   local output
   output=$(czruby -V 2>&1)
 
-  assert_equals "2.0.0" "$output" "Version should be 2.0.0" || return 1
+  assert_equals "3.0.0" "$output" "Version should be 3.0.0" || return 1
 }
 
 # Test: Version long option
@@ -43,7 +43,7 @@ test_version_long_option() {
   local output
   output=$(czruby --version 2>&1)
 
-  assert_equals "2.0.0" "$output" "Version should be 2.0.0 with --version" || return 1
+  assert_equals "3.0.0" "$output" "Version should be 3.0.0 with --version" || return 1
 }
 
 # Test: Table display (no arguments)

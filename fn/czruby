@@ -17,7 +17,7 @@
 			print -Pn -f "%-20s %s\n" -- "--purge" "Remove invalid configs"
 			;;
 			-V|--version)
-				print "2.0.0"
+				print "3.0.0"
 				;;
 		"") # show available rubies
 			local marked ruby_root ruby_ver ruby_eng key
