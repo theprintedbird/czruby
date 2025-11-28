@@ -51,5 +51,10 @@ EOF
 	done
 	unset ruby_root ruby_ver ruby_eng key gem_home
 }
+# Read the persisted default from the symlink if it exists
+if [[ -L "$czruby_datadir/default" ]]; then
+	local persisted_default=$(czruby_realpath "$czruby_datadir/default")
+	RUBIES_DEFAULT="${persisted_default:t}"
+fi
 czruby_set_default "$RUBIES_DEFAULT"
 
