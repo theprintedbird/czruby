@@ -1,7 +1,10 @@
 # Sets the default Ruby environment to use when no specific version is specified.
 {
+	# Reject empty string argument, default only when argument omitted
+	if [[ $# -gt 0 && -z "$1" ]]; then
+		return 1
+	fi
 	local choice="${1:-system}"
-	[[ -z $choice ]] && return 1
 	if [[ -z ${(M)rubies:#*$choice} ]]; then
 		print "That ruby is not available\n\n"
 		czruby
