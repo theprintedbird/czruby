@@ -4,16 +4,20 @@
 {
 	local ver=${1}
 	local ruby_root="${2:-$RUBY_ROOT}"
-	local excludes=()
 
-	# TODO consider replacing loop
-	for place in "$gem_path"; do
-		local bin="$place/bin"
-		excludes=("$bin" "${excludes[@]}")  # Append to the array correctly
+	# Build exclusion list from current gem_path bins AND ruby bin
+	local excludes=()
+	for place in "${gem_path[@]}"; do
+		excludes+=("$place/bin")
 	done
 
-	if [[ $#gem_path > 0 ]]; then
-		# remove any excluded paths
+	# Also exclude current RUBY_ROOT/bin if it exists
+	if [[ -n "$RUBY_ROOT" && -d "$RUBY_ROOT/bin" ]]; then
+		excludes+=("$RUBY_ROOT/bin")
+	fi
+
+	# Remove excluded paths from PATH
+	if [[ ${#excludes[@]} -gt 0 ]]; then
 		path=(${path:|excludes})
 	fi
 
