@@ -58,7 +58,7 @@
 				print -Pn -f '%2b%2b%2b %-12s %-11s %s%s\n' -- $rmarker $dmarker $smarker ${ruby_eng} $ruby_ver "${ruby_root}" "%{$reset_color%}"
 				unset rmarker dmarker smarker
 			done
-			print -Pn -f '\n%b %b %b' "$FG[002]current%{$reset_color%}" "$FG[199]default%{$reset_color%}" "$FG[247]system%{$reset_color%}\n"
+			print -Pn -f '\nkey: %b %b %b' "$FG[002]current%{$reset_color%}" "$FG[199]default%{$reset_color%}" "$FG[247]system%{$reset_color%}\n"
 			unset marked rmarker ruby_root ruby_eng ruby_ver
 			;;
 		--set-default)	shift;
