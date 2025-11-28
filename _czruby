@@ -1,0 +1,104 @@
+#compdef czruby
+
+_czruby() {
+  local curcontext="$curcontext" state line
+  typeset -A opt_args
+
+  # Safety check: ensure czruby is initialized
+  if [[ ! -v rubies ]]; then
+    _message "czruby not initialized"
+    return 1
+  fi
+
+  _arguments -C \
+    '(-h --help)'{-h,--help}'[Show help message]' \
+    '(-V --version)'{-V,--version}'[Show version]' \
+    '--purge[Remove invalid configs]' \
+    '--set-default[Set default Ruby version]:ruby version:->rubies' \
+    '1:ruby selection:->ruby_or_special' \
+    && return 0
+
+  case $state in
+    rubies)
+      _czruby_rubies
+      ;;
+    ruby_or_special)
+      _czruby_all_options
+      ;;
+  esac
+}
+
+_czruby_rubies() {
+  local -a ruby_descriptions
+  local ruby_root key desc ruby_eng ruby_ver
+
+  for ruby_root in ${rubies[@]}; do
+    if [[ "$ruby_root" == "system" ]]; then
+      ruby_descriptions+=("system:System Ruby (/usr)")
+      continue
+    fi
+
+    key="${ruby_root:t}"  # Get basename
+
+    # Parse engine and version (mirror czruby_use logic)
+    if [[ "$key" =~ "-" ]]; then
+      ruby_eng="${key%%-*}"
+      ruby_ver="${key#*-}"
+      desc="$ruby_eng $ruby_ver"
+    else
+      ruby_eng="ruby"
+      ruby_ver="$key"
+      desc="Ruby $ruby_ver"
+    fi
+
+    ruby_descriptions+=("$key:$desc")
+  done
+
+  _describe 'ruby version' ruby_descriptions
+}
+
+_czruby_all_options() {
+  local -a all_options
+
+  # Special values
+  all_options=(
+    'system:Use system Ruby (/usr)'
+    'default:Switch to default Ruby'
+  )
+
+  # Command switches (only if not already specified)
+  if [[ ! -v opt_args[-h] && ! -v opt_args[--help] ]]; then
+    all_options+=('-h:Show help message' '--help:Show help message')
+  fi
+
+  if [[ ! -v opt_args[-V] && ! -v opt_args[--version] ]]; then
+    all_options+=('-V:Show version' '--version:Show version')
+  fi
+
+  all_options+=(
+    '--purge:Remove invalid configs'
+    '--set-default:Set default Ruby version'
+  )
+
+  # Add Ruby installations
+  local ruby_root key desc ruby_eng ruby_ver
+  for ruby_root in ${rubies[@]}; do
+    [[ "$ruby_root" == "system" ]] && continue
+
+    key="${ruby_root:t}"
+
+    if [[ "$key" =~ "-" ]]; then
+      ruby_eng="${key%%-*}"
+      ruby_ver="${key#*-}"
+      desc="$ruby_eng $ruby_ver"
+    else
+      desc="Ruby $key"
+    fi
+
+    all_options+=("$key:$desc")
+  done
+
+  _describe 'czruby option' all_options
+}
+
+_czruby "$@"

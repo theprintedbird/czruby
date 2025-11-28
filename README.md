@@ -59,6 +59,37 @@ Help is available via `czruby -h`.
 
 It only needs to be `source`d, so put it wherever is convenient for doing so (probably loaded by zshrc).
 
+## Tab Completion
+
+czruby includes tab-completion support for zsh. Completions are automatically enabled when you source `czruby.plugin.conf`.
+
+### What Gets Completed
+
+- **Command switches**: `--set-default`, `--purge`, `-h`, `--help`, `-V`, `--version`
+- **Special values**: `system`, `default`
+- **Installed Rubies**: Version numbers, engine names, and full installation names
+
+### Examples
+
+```bash
+czruby <TAB>               # Shows all available options and Rubies
+czruby 3.<TAB>             # Shows all versions starting with 3.
+czruby truf<TAB>           # Completes to truffleruby-* versions
+czruby --set-default <TAB> # Shows available Ruby installations
+```
+
+### Troubleshooting
+
+If completions don't work, ensure the completion system is initialized before sourcing czruby:
+
+```zsh
+# In ~/.zshrc
+autoload -Uz compinit
+compinit
+
+source /path/to/czruby/czruby.plugin.conf
+```
+
 ## <a name="running-tests">Running Tests</a>
 
 czruby has a comprehensive test suite that can be run either in containers (recommended) or natively.
