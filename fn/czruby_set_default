@@ -5,19 +5,22 @@
 		return 1
 	fi
 	local choice="${1:-system}"
-	if [[ -z ${(M)rubies:#*$choice} ]]; then
+
+	# For non-system rubies, verify they exist in rubies array first
+	if [[ "$choice" != "system" ]] && [[ -z ${(M)rubies:#*$choice} ]]; then
 		print "That ruby is not available\n\n"
 		czruby
 		return 1
 	fi
 
-	if [[ -f "$czruby_datadir/${choice}" ]]; then
-		RUBIES_DEFAULT="$choice"
-		ln -fs "$czruby_datadir/${RUBIES_DEFAULT}" "$czruby_datadir/default"
-	else
+	# Check if config file exists
+	if [[ ! -f "$czruby_datadir/${choice}" ]]; then
 		printf "That ruby has not been set up, please run czruby_setup\n\n"
 		return 1
 	fi
+
+	RUBIES_DEFAULT="$choice"
+	ln -fs "$czruby_datadir/${RUBIES_DEFAULT}" "$czruby_datadir/default"
 
 	czruby_reset "$choice"
 }

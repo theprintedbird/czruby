@@ -14,6 +14,8 @@ czruby_purge() {
   default_ruby="${default_ruby:t}"
 
   # Process each file in czruby_datadir
+  # Use nullglob to handle empty directories gracefully
+  setopt local_options null_glob
   for file in "$czruby_datadir"/*; do
     [[ -f "$file" ]] || continue
     key="${file:t}"
@@ -44,10 +46,17 @@ czruby_purge() {
       rm "$file"
       ((purged++))
 
-      # If this was the default, remove the default symlink
+      # If this was the default, remove the default symlink and reset
       if [[ "$key" == "$default_ruby" ]]; then
-        rm "$czruby_datadir/default"
-        czruby_set_default system
+        rm -f "$czruby_datadir/default"
+
+        # Try to set default to system if available, otherwise unset
+        if [[ -f "$czruby_datadir/system" ]]; then
+          czruby_set_default system
+        else
+          # System not available, clear default
+          RUBIES_DEFAULT=""
+        fi
       fi
     fi
   done
