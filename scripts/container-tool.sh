@@ -84,11 +84,12 @@ run_container() {
     local args=("$@")
 
     $runtime run --rm \
+        -v "$(pwd):/app" \
         -e XDG_DATA_HOME=/tmp/czruby-data \
         -e XDG_CACHE_HOME=/tmp/czruby-cache \
         -e XDG_CONFIG_HOME=/tmp/czruby-config \
-        "${args[@]}" \
-        "$FULL_IMAGE"
+        "$FULL_IMAGE" \
+        "${args[@]}"
 }
 
 # Run container with volume mount
