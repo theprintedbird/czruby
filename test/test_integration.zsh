@@ -11,16 +11,16 @@ test_full_workflow() {
   rubies=("$ruby1" "$ruby2" "$ruby3")
 
   # 1. Setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Verify configs created
   assert_file_exists "$czruby_datadir/3.2.0" "3.2.0 config" || return 1
   assert_file_exists "$czruby_datadir/3.3.0" "3.3.0 config" || return 1
   assert_file_exists "$czruby_datadir/truffleruby-21.1.0" "truffleruby config" || return 1
 
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
 
   # 2. Use first ruby
   czruby_use "3.2.0"
@@ -50,9 +50,9 @@ test_multiple_mri_versions() {
   local ruby4=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2" "$ruby3" "$ruby4")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Test switching through all versions
   for ver in "3.0.0" "3.1.0" "3.2.0" "3.3.0"; do
@@ -68,9 +68,9 @@ test_mixed_engines() {
   local jruby=$(create_mock_ruby "jruby-9.4.0")
   rubies=("$mri" "$truffle" "$jruby")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Switch to each and verify engine
   czruby_use "3.3.0"
@@ -89,9 +89,9 @@ test_path_isolation() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Use first ruby
   czruby_use "3.2.0"
@@ -113,9 +113,9 @@ test_gem_path_isolation() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Use first ruby
   czruby_use "3.2.0"
@@ -136,9 +136,9 @@ test_default_persistence() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "3.3.0"
 
@@ -162,9 +162,9 @@ test_clean_environment() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Use first ruby
   czruby_use "3.2.0"
@@ -191,10 +191,10 @@ test_setup_use_default_workflow() {
   rubies=("$ruby1" "$ruby2")
 
   # Setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
 
   # Use 3.2.0
   czruby_use "3.2.0"
@@ -214,10 +214,10 @@ test_purge_after_removal() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Verify both configs exist
   assert_file_exists "$czruby_datadir/3.2.0" || return 1
@@ -249,9 +249,9 @@ test_custom_init_integration() {
     rubies+=("$ruby2")
   }
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Custom ruby should be usable
   assert_array_contains "$ruby2" "${rubies[@]}" || return 1
@@ -267,9 +267,9 @@ test_roundtrip_all_rubies() {
   local ruby3=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2" "$ruby3")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Start with system
   czruby_use "system"

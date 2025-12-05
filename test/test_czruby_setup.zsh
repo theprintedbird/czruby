@@ -13,7 +13,7 @@ test_creates_data_directory() {
   assert_dir_exists "$XDG_DATA_HOME" "XDG_DATA_HOME should exist" || return 1
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Verify czruby_datadir was created
   assert_dir_exists "$czruby_datadir" "czruby_datadir should be created" || return 1
@@ -29,7 +29,7 @@ test_adds_system_ruby() {
   assert_array_not_contains "system" "${rubies[@]}" || return 1
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Verify system was added
   assert_array_contains "system" "${rubies[@]}" || return 1
@@ -42,7 +42,7 @@ test_no_duplicate_system_ruby() {
   rubies=("system" "$ruby_dir")
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Count occurrences of system
   local count=0
@@ -61,7 +61,7 @@ test_generates_config_files() {
   rubies=("$ruby1" "$ruby2")
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Verify config files exist
   assert_file_exists "$czruby_datadir/3.2.0" "Config for 3.2.0 should exist" || return 1
@@ -76,7 +76,7 @@ test_config_file_content() {
   rubies=("$ruby_dir")
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Read config file
   local config_content=$(cat "$czruby_datadir/3.3.0")
@@ -95,7 +95,7 @@ test_creates_gem_home_dirs() {
   rubies=("$ruby_dir")
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Verify GEM_HOME directory exists
   local gem_home="$XDG_CACHE_HOME/Ruby/ruby/3.3.0"
@@ -109,7 +109,7 @@ test_parses_mri_rubies() {
   rubies=("$ruby_dir")
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Read config and verify engine is "ruby"
   local config_content=$(cat "$czruby_datadir/3.3.0")
@@ -123,7 +123,7 @@ test_parses_alternate_engines() {
   rubies=("$ruby_dir")
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Read config
   local config_content=$(cat "$czruby_datadir/truffleruby-21.1.0")
@@ -138,7 +138,7 @@ test_parses_jruby() {
   local ruby_dir=$(create_mock_ruby "jruby-9.4.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   local config_content=$(cat "$czruby_datadir/jruby-9.4.0")
   assert_contains "$config_content" 'RUBY_ENGINE="jruby"' "Should parse engine as jruby" || return 1
@@ -157,7 +157,7 @@ test_custom_init_hook() {
   }
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Verify hook was called
   assert_file_exists "$TEST_DIR/custom_init_called" "Custom init hook should be called" || return 1
@@ -173,7 +173,7 @@ test_idempotent_setup() {
   rubies=("$ruby_dir")
 
   # Run setup first time
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Modify config file
   echo "# marker" >> "$czruby_datadir/3.3.0"
@@ -181,7 +181,7 @@ test_idempotent_setup() {
   # Re-initialize and run setup again
   source "$CZRUBY_ROOT/czruby.plugin.conf"
   rubies=("$ruby_dir")
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Verify marker still exists (file wasn't overwritten)
   local config_content=$(cat "$czruby_datadir/3.3.0")
@@ -196,7 +196,7 @@ test_sets_default_ruby() {
   RUBIES_DEFAULT="system"
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Verify default symlink exists
   assert_symlink "$czruby_datadir/default" "Default symlink should be created" || return 1
@@ -209,7 +209,7 @@ test_config_valid_syntax() {
   rubies=("$ruby_dir")
 
   # Run setup
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Check syntax
   if zsh -n "$czruby_datadir/3.3.0" 2>&1; then
@@ -227,7 +227,7 @@ test_multiple_same_engine() {
   local ruby3=$(create_mock_ruby "3.4.0")
   rubies=("$ruby1" "$ruby2" "$ruby3")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   assert_file_exists "$czruby_datadir/3.2.0" || return 1
   assert_file_exists "$czruby_datadir/3.3.0" || return 1
@@ -239,7 +239,7 @@ test_path_setup_in_config() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   local config_content=$(cat "$czruby_datadir/3.3.0")
 
@@ -252,7 +252,7 @@ test_gem_path_setup_in_config() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   local config_content=$(cat "$czruby_datadir/3.3.0")
 

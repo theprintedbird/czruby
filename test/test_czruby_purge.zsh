@@ -6,7 +6,7 @@ source "${0:A:h}/test_helper.zsh"
 # Test: Error when datadir doesn't exist
 test_error_no_datadir() {
   # Don't create datadir
-  source "$CZRUBY_ROOT/fn/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
 
   local output
   output=$(czruby_purge 2>&1)
@@ -21,10 +21,10 @@ test_removes_orphaned_configs() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Create an orphan config (not in rubies)
   touch "$czruby_datadir/orphan-1.0.0"
@@ -39,10 +39,10 @@ test_removes_stale_configs() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Delete the ruby directory but keep in rubies array
   rm -rf "$ruby_dir"
@@ -58,10 +58,10 @@ test_skips_default_symlink() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "3.3.0"
   czruby_purge
@@ -74,10 +74,10 @@ test_reports_purge_count() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Create orphan configs
   touch "$czruby_datadir/orphan1"
@@ -94,10 +94,10 @@ test_zero_purged_when_clean() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   local output
   output=$(czruby_purge 2>&1)
@@ -111,10 +111,10 @@ test_preserves_valid_configs() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Add an orphan
   touch "$czruby_datadir/orphan"
@@ -132,10 +132,10 @@ test_updates_default_if_purged() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Set 3.3.0 as default
   czruby_set_default "3.3.0"
@@ -155,15 +155,15 @@ test_system_ruby_removal() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # The system config is created during setup
   # In test env, /usr/bin/ruby may not exist
   # We're testing the logic, not the actual system
 
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   local output
   output=$(czruby_purge 2>&1)
@@ -177,10 +177,10 @@ test_multiple_orphans_removed() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Create multiple orphans
   touch "$czruby_datadir/orphan1"
@@ -198,7 +198,7 @@ test_multiple_orphans_removed() {
 test_handles_empty_datadir() {
   mkdir -p "$czruby_datadir"
 
-  source "$CZRUBY_ROOT/fn/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
 
   local output
   output=$(czruby_purge 2>&1)

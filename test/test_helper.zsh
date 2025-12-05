@@ -38,9 +38,9 @@ setup_test_env() {
   source "$CZRUBY_ROOT/czruby.plugin.conf"
 
   # Add functions to fpath and autoload
-  fpath=("$CZRUBY_ROOT/fn" $fpath)
-  for fn_file in "$CZRUBY_ROOT"/fn/*; do
-    autoload -Uz "${fn_file:t}"
+  fpath=("$CZRUBY_ROOT/functions" $fpath)
+  for functions_file in "$CZRUBY_ROOT"/functions/*; do
+    autoload -Uz "${functions_file:t}"
   done
 
   # Reset arrays
@@ -352,7 +352,7 @@ print_summary() {
 
 # Source function files directly (for testing)
 source_functions() {
-  for fn_file in "$CZRUBY_ROOT"/fn/*; do
-    source "$fn_file"
+  for functions_file in "$CZRUBY_ROOT"/functions/*; do
+    source "$functions_file"
   done
 }

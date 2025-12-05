@@ -10,11 +10,11 @@ test_exact_name_match() {
   local ruby2=$(create_mock_ruby "truffleruby-21.1.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Source the use function
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Test exact match
   czruby_use "truffleruby-21.1.0" 2>&1
@@ -28,9 +28,9 @@ test_version_match_mri() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_use "3.3.0" 2>&1
 
@@ -43,9 +43,9 @@ test_engine_match() {
   local ruby2=$(create_mock_ruby "truffleruby-21.1.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_use "truffleruby" 2>&1
 
@@ -57,9 +57,9 @@ test_unknown_ruby_error() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   local output
   output=$(czruby_use "nonexistent" 2>&1)
@@ -76,9 +76,9 @@ test_ambiguous_match_error() {
   local ruby2=$(create_mock_ruby "truffleruby-22.0.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   local output
   output=$(czruby_use "truffleruby" 2>&1)
@@ -95,9 +95,9 @@ test_exact_match_priority() {
   local ruby2=$(create_mock_ruby "truffleruby-3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Looking for 3.3.0 should match MRI exactly
   czruby_use "3.3.0" 2>&1
@@ -110,9 +110,9 @@ test_partial_version_no_match() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   local output
   output=$(czruby_use "3.3" 2>&1)
@@ -127,9 +127,9 @@ test_case_sensitivity() {
   local ruby_dir=$(create_mock_ruby "TruffleRuby-21.1.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Lowercase should not match uppercase
   local output
@@ -146,9 +146,9 @@ test_jruby_matching() {
   local ruby2=$(create_mock_ruby "jruby-9.4.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_use "jruby" 2>&1
 
@@ -160,9 +160,9 @@ test_system_ruby_matching() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_use "system" 2>&1
 
@@ -178,9 +178,9 @@ test_first_match_wins() {
   mkdir -p "$ruby2/bin"
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_use "3.3.0" 2>&1
 
@@ -192,9 +192,9 @@ test_empty_rubies_array() {
   rubies=()
 
   # Need to setup but with empty rubies (system will be added)
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   local output
   output=$(czruby_use "3.3.0" 2>&1)

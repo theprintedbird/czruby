@@ -5,7 +5,7 @@ source "${0:A:h}/test_helper.zsh"
 
 # Test: Help output format
 test_help_output() {
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby -h 2>&1)
@@ -18,7 +18,7 @@ test_help_output() {
 
 # Test: Help with long option
 test_help_long_option() {
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby --help 2>&1)
@@ -28,7 +28,7 @@ test_help_long_option() {
 
 # Test: Version output
 test_version_output() {
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby -V 2>&1)
@@ -38,7 +38,7 @@ test_version_output() {
 
 # Test: Version long option
 test_version_long_option() {
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby --version 2>&1)
@@ -51,8 +51,8 @@ test_table_display() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby 2>&1)
@@ -69,8 +69,8 @@ test_table_shows_rubies() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby 2>&1)
@@ -84,8 +84,8 @@ test_table_shows_system() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby 2>&1)
@@ -98,10 +98,10 @@ test_dispatch_set_default() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby --set-default "3.3.0"
 
@@ -113,9 +113,9 @@ test_dispatch_system() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # First use non-system
   czruby_reset "3.3.0"
@@ -131,10 +131,10 @@ test_dispatch_default() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "3.3.0"
   czruby_reset "system"
@@ -150,11 +150,11 @@ test_dispatch_purge() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
-  source "$CZRUBY_ROOT/fn/czruby_purge"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_purge"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   local output
   output=$(czruby --purge 2>&1)
@@ -167,10 +167,10 @@ test_dispatch_use() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby "3.3.0"
 
@@ -182,10 +182,10 @@ test_unknown_argument() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   local output
   output=$(czruby "nonexistent" 2>&1)
@@ -199,8 +199,8 @@ test_table_footer_legend() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby 2>&1)

@@ -8,9 +8,9 @@ test_sets_rubies_default_var() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "3.3.0"
 
@@ -22,9 +22,9 @@ test_creates_default_symlink() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "3.3.0"
 
@@ -36,9 +36,9 @@ test_symlink_points_to_correct_config() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "3.3.0"
 
@@ -52,10 +52,10 @@ test_error_nonexistent_ruby() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby_set_default "nonexistent" 2>&1)
@@ -73,9 +73,9 @@ test_error_missing_config() {
   # Create datadir but don't setup
   mkdir -p "$czruby_datadir"
 
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   local output
   output=$(czruby_set_default "3.3.0" 2>&1)
@@ -90,9 +90,9 @@ test_defaults_to_system() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Call with no argument
   czruby_set_default
@@ -105,9 +105,9 @@ test_switches_to_default() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "3.3.0"
 
@@ -120,9 +120,9 @@ test_can_change_default() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Set first default
   czruby_set_default "3.2.0"
@@ -139,9 +139,9 @@ test_symlink_updated() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "3.2.0"
   czruby_set_default "3.3.0"
@@ -155,9 +155,9 @@ test_set_system_as_default() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "system"
 
@@ -171,9 +171,9 @@ test_set_alternate_engine_default() {
   local ruby2=$(create_mock_ruby "truffleruby-21.1.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_set_default "truffleruby-21.1.0"
 
@@ -186,9 +186,9 @@ test_empty_argument_error() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Empty string argument
   local result

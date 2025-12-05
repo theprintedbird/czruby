@@ -158,7 +158,7 @@ zsh test/test_integration.zsh
 
 ```bash
 # Check zsh syntax for all functions
-for file in fn/*; do zsh -n "$file"; done
+for file in functions/*; do zsh -n "$file"; done
 zsh -n czruby.plugin.conf
 ```
 
@@ -169,7 +169,7 @@ zsh -n czruby.plugin.conf
 shellcheck --shell=bash --severity=warning \
   -e SC2034 -e SC2128 -e SC2154 -e SC2206 \
   -e SC2296 -e SC2299 -e SC1090 -e SC2086 \
-  fn/* czruby.plugin.conf
+  functions/* czruby.plugin.conf
 ```
 
 ## Writing Tests

@@ -7,7 +7,7 @@ source "${0:A:h}/test_helper.zsh"
 test_empty_rubies_array() {
   rubies=()
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # System should be added
   assert_array_contains "system" "${rubies[@]}" || return 1
@@ -19,9 +19,9 @@ test_duplicate_rubies() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir" "$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Should still work
   czruby_use "3.3.0"
@@ -33,7 +33,7 @@ test_multiple_hyphens_in_name() {
   local ruby_dir=$(create_mock_ruby "ruby-head-preview")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Config should be created
   assert_file_exists "$czruby_datadir/ruby-head-preview" || return 1
@@ -48,9 +48,9 @@ test_dots_in_version() {
   local ruby_dir=$(create_mock_ruby "3.4.0-preview1")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Should handle this name
   czruby_use "3.4.0-preview1"
@@ -62,7 +62,7 @@ test_long_ruby_name() {
   local ruby_dir=$(create_mock_ruby "truffleruby-community-21.1.0-linux-amd64")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   assert_file_exists "$czruby_datadir/truffleruby-community-21.1.0-linux-amd64" || return 1
 }
@@ -74,7 +74,7 @@ test_special_characters_in_path() {
   mkdir -p "$ruby_dir/bin"
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Should handle path with space
   assert_file_exists "$czruby_datadir/3.3.0" || return 1
@@ -85,15 +85,15 @@ test_symlink_to_nonexistent() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_set_default"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_set_default"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Create a broken symlink
   ln -sf "$czruby_datadir/nonexistent" "$czruby_datadir/default"
 
   # Try to use default - should handle gracefully
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby"
   local output
   output=$(czruby 2>&1)
 
@@ -106,8 +106,8 @@ test_unreadable_config() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Remove read permission
   chmod -r "$czruby_datadir/3.3.0"
@@ -129,8 +129,8 @@ test_concurrent_setup() {
   rubies=("$ruby_dir")
 
   # Run setup twice
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # Should still have valid config
   assert_file_exists "$czruby_datadir/3.3.0" || return 1
@@ -146,8 +146,8 @@ test_missing_grealpath() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby"
 
   # The table display uses grealpath
   # Just verify it doesn't crash
@@ -167,7 +167,7 @@ test_large_rubies_array() {
     rubies+=("$ruby_dir")
   done
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
 
   # All should have configs
   for i in {1..20}; do
@@ -181,9 +181,9 @@ test_empty_initial_gem_path() {
   rubies=("$ruby_dir")
   gem_path=()  # Explicitly empty
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_use "3.3.0"
 
@@ -199,9 +199,9 @@ test_nonstandard_ruby_structure() {
   mkdir -p "$ruby_dir/bin"
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_use "minimal-3.3.0"
 
@@ -213,9 +213,9 @@ test_nonstandard_ruby_structure() {
 test_only_system_ruby() {
   rubies=()
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Only system should be available
   czruby_use "system"
@@ -234,9 +234,9 @@ test_rapid_switching() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Switch rapidly back and forth
   for i in {1..10}; do
@@ -255,9 +255,9 @@ test_path_growth() {
   local ruby2=$(create_mock_ruby "3.3.0")
   rubies=("$ruby1" "$ruby2")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   local initial_path_count=${#path[@]}
 
@@ -287,9 +287,9 @@ test_use_without_argument() {
   local ruby_dir=$(create_mock_ruby "3.3.0")
   rubies=("$ruby_dir")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   # Call without argument - should fail
   local output
@@ -306,9 +306,9 @@ test_numeric_version() {
   local ruby1=$(create_mock_ruby "310")  # No dots
   rubies=("$ruby1")
 
-  source "$CZRUBY_ROOT/fn/czruby_setup"
-  source "$CZRUBY_ROOT/fn/czruby_use"
-  source "$CZRUBY_ROOT/fn/czruby_reset"
+  source "$CZRUBY_ROOT/functions/czruby_setup"
+  source "$CZRUBY_ROOT/functions/czruby_use"
+  source "$CZRUBY_ROOT/functions/czruby_reset"
 
   czruby_use "310"
   assert_equals "$ruby1" "$RUBY_ROOT" || return 1

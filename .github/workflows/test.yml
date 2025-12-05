@@ -19,7 +19,7 @@ jobs:
       - name: Check Zsh syntax
         run: |
           echo "Checking Zsh syntax for all functions..."
-          for file in fn/*; do
+          for file in functions/*; do
             echo "Checking $file..."
             zsh -n "$file"
           done
@@ -50,7 +50,7 @@ jobs:
             -e SC2299 \
             -e SC1090 \
             -e SC2086 \
-            fn/* czruby.plugin.conf || true
+            functions/* czruby.plugin.conf || true
           echo "ShellCheck completed"
 
   comprehensive-tests:
@@ -110,9 +110,9 @@ jobs:
           source czruby.plugin.conf
 
           # Load all functions
-          for fn_file in fn/*; do
-            autoload -Uz "${fn_file:t}"
-            fpath=("$PWD/fn" $fpath)
+          for functions_file in functions/*; do
+            autoload -Uz "${functions_file:t}"
+            fpath=("$PWD/functions" $fpath)
           done
 
           # Test 1: Check that RUBIES array is set up
@@ -144,7 +144,7 @@ jobs:
 
           # Test 4: Check version output
           echo "Test 4: czruby version"
-          source fn/czruby
+          source functions/czruby
           version_output=$(czruby -V 2>&1)
           if [[ "$version_output" == "3.0.0" ]]; then
             echo "  PASS: Version is 3.0.0"
