@@ -61,7 +61,7 @@ It only needs to be `source`d, so put it wherever is convenient for doing so (pr
 
 ## Tab Completion
 
-czruby includes tab-completion support for zsh. Completions are automatically enabled when you source `czruby.plugin.conf`.
+czruby includes tab-completion support for zsh. As long as the `functions` dir is added to the `fpath` (very common for plugin managers to do), it will be found.
 
 ### What Gets Completed
 
